@@ -79,7 +79,7 @@
     priority:
       fields: priority
     payload:
-      fields: payload.*
+      fields: payload
 
 # ------------------------------------------------------------------------------
 # dhcp Events
