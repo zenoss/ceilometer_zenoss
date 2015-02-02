@@ -71,3 +71,30 @@
       type: datetime
       fields: payload.audit_period_ending
 
+# ------------------------------------------------------------------------------
+# Network Events
+# ------------------------------------------------------------------------------
+- event_type: network.*
+  traits: &network_traits
+    priority:
+      fields: priority
+    payload:
+      fields: payload
+# ------------------------------------------------------------------------------
+# Subnet Events
+# ------------------------------------------------------------------------------
+- event_type: subnet.*
+  traits: &subnet_traits
+    priority:
+      fields: priority
+    payload:
+      fields: payload
+# ------------------------------------------------------------------------------
+# DHCP Events
+# ------------------------------------------------------------------------------
+- event_type: dhcp_agent.*
+  traits: &dhcp_agent_traits
+    priority:
+      fields: priority
+    payload:
+      fields: payload
