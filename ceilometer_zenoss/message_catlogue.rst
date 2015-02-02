@@ -16,15 +16,15 @@ These events have these event types:
 Top Level Types
 --------------------------------------------------------------------------------
 
-* network.*
-* subnet.*
-* port.*
-* security_group.*
-* security_group_rule.*
+* dhcp_agent.network.* [add, delete]
 * floatingip.*
+* network.*
+* port.*
 * router.*
 * router.interface.*
-* dhcp_agent.network.* [add, delete]
+* security_group.*
+* security_group_rule.*
+* subnet.*
 
 References: 
 
@@ -322,9 +322,15 @@ Router Events: Payload
 
 Router event payloads on end::
 
-      (Pdb) event_type
-      'router.update.end'
-      (Pdb) pprint.pprint(payload)
+router.update.start::
+
+      {'id': u'70e4150e-cc15-47fd-a777-5157ed769db4',
+       u'router': 
+          {u'external_gateway_info': 
+              {u'network_id': u'dce9ac6a-e9e2-436b-93bf-031600ef1339'}}}
+
+router.update.end (payload):: 
+
       {'router': {'admin_state_up': True,
                   'distributed': False,
                   'external_gateway_info': 
@@ -339,8 +345,17 @@ Router event payloads on end::
                   'status': u'ACTIVE',
                   'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
 
-      (Pdb) event_type
-      'router.interface.delete'
+
+router.interface.create::
+
+      {'router_interface': 
+          {'id': u'ad89936d-3d2f-4c63-942c-920760c994bb',
+           'port_id': '4688d778-0a6f-4883-b393-eee54bab95d1',
+           'subnet_id': u'd3c18d0a-4876-4420-9020-824be2684156',
+           'tenant_id': u'f873d72ccd7744bfa8355c8833f203a2'}}
+
+router.interface.delete::
+
       (Pdb) pprint.pprint(payload)
       {'router_interface': 
           {'id': u'ed783e7d-8928-47ac-ac13-1736510703fe',
@@ -348,16 +363,44 @@ Router event payloads on end::
            'subnet_id': u'0e8642f2-142f-453f-9f7e-357e8074142d',
            'tenant_id': u'1bfee2f15d8e4c9596192a1a9dee4c20'}}
                   
-      'router.delete.end'
-      (Pdb) pprint.pprint(payload)
+
+router.create.start::
+
+      {u'router': {u'admin_state_up': True,
+                   u'name': u'router_AB',
+                   u'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'}}
+
+router.create.end::
+
+      {'router': {'admin_state_up': True,
+            'distributed': False,
+            'external_gateway_info': None,
+            'ha': False,
+            'id': 'ad89936d-3d2f-4c63-942c-920760c994bb',
+            'name': u'router_AB',
+            'routes': [],
+            'status': 'ACTIVE',
+            'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'}}
+
+router.delete.end::
+
+      
       {'router_id': u'ed783e7d-8928-47ac-ac13-1736510703fe'}
 
 Port Events: Payload
 --------------------------------------------------------------------------------
 
-Port event payloads on end::
+port.create.start::
 
-     }
+      {u'port': {u'admin_state_up': True,
+                 u'binding:host_id': u'mp8.zenoss.loc',
+                 u'device_id': u'23863c1e-2dff-4c96-9ba4-13d07f1f4abf',
+                 u'device_owner': u'compute:None',
+                 u'network_id': u'dce9ac6a-e9e2-436b-93bf-031600ef1339',
+                 u'security_groups': [u'a6e24018-58e3-4f4c-a8e0-cfc47b15730c'],
+                 u'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+
+port.create.end::
 
       (Pdb) pprint.pprint(payload)
       {'port': {
