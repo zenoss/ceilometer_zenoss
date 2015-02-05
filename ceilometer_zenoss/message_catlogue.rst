@@ -50,35 +50,29 @@ Temporal Type
 
 Create Events
 ----------------------
+Data from AMQP gets fed into Zenoss and cached in OSI:
 
-network.create.start::
+EventsAMQPDataSource.processMessage::
 
-      {
-          "device": "mp8.osi",
-          "data": {
-              "traits": [
-                  {
-                      "dtype": 1,
-                      "name": "tenant_id",
-                      "value": "dbb36d51377 54461a26b970bdf8ac780"
-                  },
-                  {
-                      "dtype": 1,
-                      "name": "service",
-                      "value": "network.mp8.zenoss.loc"
-                  },
-                  {
-                      "dtype": 1,
-                      "name": "request_id",
-                      "value": "req-a1411f71-518d-4a28-b1f7-9ebd2def83c4"
-                  }
-              ],
-              "generated": "2015-01-28T 19:51:57.191120",
-              "event_type": "network.create.start",
-              "message_id": "017e7a06-298a-4a39-9a12-28cf8708d8ad"
-          },
-          "type": "event"
-      }
+      cache[device_id].add(value['data'], timestamp)
+
+It is then iterated over (Collections) in same::
+    
+      for entry in cache[device_id].get():
+
+network.create.end (payload)::
+
+      {'network': {'admin_state_up': True,
+                  'id': '171cddd3-6653-4507-bccf-9ad4dff5c7e0',
+                  'name': u'xxx',
+                  'provider:network_type': u'gre',
+                  'provider:physical_network': None,
+                  'provider:segmentation_id': 1L,
+                  'router:external': False,
+                  'shared': False,
+                  'status': 'ACTIVE',
+                  'subnets': [],
+                  'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
 
 network.create.end::
 
@@ -299,19 +293,19 @@ Network Events: Payload
 
 network.update.end::
 
-      (Pdb) pprint.pprint(payload)
-      {'network': {'admin_state_up': True,
-             'name': u'ZZZaxxx',
-             'id': u'6e15368b-e2e4-4488-b282-efa8a3af016b',
-             'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
-             'status': u'ACTIVE',
-             'shared': False,
-             'router:external': False,
-             'provider:network_type': u'gre',
-             'provider:physical_network': None,
-             'provider:segmentation_id': 22L,
-             'subnets': [u'27bad7ac-780f-4d90-aa7d-a4406eace55c',
-                         u'36766373-dfe8-476f-9745-a6a8d65fc851'],
+      {'network': {
+                  'admin_state_up': True,
+                  'id': u'55820ca7-2484-4d90-a2bb-b670ac329b6b',
+                  'name': u'network_C9x',
+                  'provider:network_type': u'gre',
+                  'provider:physical_network': None,
+                  'provider:segmentation_id': 9L,
+                  'router:external': False,
+                  'shared': False,
+                  'status': u'ACTIVE',
+                  'subnets': [u'ef497a89-9a03-4cd7-b6ad-ce5a6fd82439'],
+                  'tenant_id': u'c9726957929e4a1ba3971954db23d240'
+                  }}
 
 network.delete.end::
 
@@ -392,13 +386,15 @@ Port Events: Payload
 
 port.create.start::
 
-      {u'port': {u'admin_state_up': True,
+      {u'port': {
+                 u'admin_state_up': True,
                  u'binding:host_id': u'mp8.zenoss.loc',
                  u'device_id': u'23863c1e-2dff-4c96-9ba4-13d07f1f4abf',
                  u'device_owner': u'compute:None',
                  u'network_id': u'dce9ac6a-e9e2-436b-93bf-031600ef1339',
                  u'security_groups': [u'a6e24018-58e3-4f4c-a8e0-cfc47b15730c'],
-                 u'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+                 u'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
+                 }}
 
 port.create.end::
 
@@ -410,25 +406,40 @@ port.create.end::
                'allowed_address_pairs': [],
                'binding:host_id': u'mp8.zenoss.loc',
                'binding:profile': {},
-               'binding:vif_details': {u'ovs_hybrid_plug': True,
-                                       u'port_filter': True},
+               'binding:vif_details': {u'ovs_hybrid_plug': True, u'port_filter': True},
                'binding:vif_type': u'ovs',
                'binding:vnic_type': u'normal',
                'device_id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
                'device_owner': u'network:router_gateway',
                'extra_dhcp_opts': [],
-               'fixed_ips': [{'ip_address': u'192.168.117.233',
-                              'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
+               'fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
                'mac_address': u'fa:16:3e:32:f6:fa',
                'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
                'security_groups': [],
                'status': u'DOWN',
-               'tenant_id': u''}}
+               'tenant_id': u''
+               }}
 
 Subnet Events: Payload
 --------------------------------------------------------------------------------
 
 Subnet events::
+
+      (Pdb) event_type
+      'subnet.create.start'
+      (Pdb) pprint.pprint(payload)
+      {u'subnet': {u'cidr': u'10.20.50.0/24',
+                  u'enable_dhcp': True,
+                  u'gateway_ip': u'10.20.50.1',
+                  u'ip_version': 4,
+                  u'name': u'xxx_subnet',
+                  u'network_id': u'6b7fb9d3-2c36-4d3c-848a-46ed6d1c37ff'}}
+
+
+      (Pdb) event_type
+subnet.create.end::
+
+      # Address as payload.subnet.*
 
       (Pdb) result
       {'subnet': 
@@ -447,8 +458,8 @@ Subnet events::
           'ip_version': 4L, 
        }
 
-       (Pdb) event_type
-       'subnet.delete.end'
+subnet.delete.end::
+
        (Pdb) pprint.pprint(payload)
        {'subnet_id': u'55f53c72-1983-4793-a5f7-c1775699da4a'}
 
@@ -515,14 +526,17 @@ FloatingIP Events look like::
 
     (Pdb) pprint.pprint(payload)
     {'floatingip': 
-         {'fixed_ip_address': None,                                                
+         {
+         'fixed_ip_address': None,                                                
          'floating_ip_address': u'192.168.117.234',                                
          'floating_network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',           
          'id': '75bf9a93-6faf-4799-8b2c-6bb695aa7b6f',                             
          'port_id': None,                                                          
          'router_id': None,                                                        
          'status': 'DOWN',                                                         
-         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}              
+         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
+         }
+    }              
  
 
 
