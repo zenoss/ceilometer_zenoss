@@ -72,68 +72,277 @@
       fields: payload.audit_period_ending
 
 # ------------------------------------------------------------------------------
-# Neutron Events (Base Set for Inheritance)
+# Neutron Events (Base for Inheritance)
 # ------------------------------------------------------------------------------
 - event_type: neutron.*
   traits: &neutron_traits
     priority:
       fields: priority
-    payload:
-      fields: payload
+    event_type:
+      fields: event_type
 
 # ------------------------------------------------------------------------------
 # dhcp Events
 # ------------------------------------------------------------------------------
 - event_type: dhcp_agent.*
-  traits: 
+  traits:
     <<: *neutron_traits
+    id:
+      fields: payload.agent.id
+    network_id:
+      fields: payload.agent.network_id
 
 # ------------------------------------------------------------------------------
 # FloatingIP
 # ------------------------------------------------------------------------------
 - event_type: floatingip.*
-  traits: 
+  traits:
     <<: *neutron_traits
+    fixed_ip_address:
+      fields: payload.floatingip.fixed_ip_address
+    floating_ip_address:
+      fields: payload.floatingip.floating_ip_address
+    floating_network_id:
+      fields: payload.floatingip.floating_network_id
+    id:
+      fields: payload.floatingip.id
+    port_id:
+      fields: payload.floatingip.port_id
+    router_id:
+      fields: payload.floatingip.router_id
+    status:
+      fields: payload.floatingip.status
+    tenant_id:
+      fields: payload.floatingip.tenant_id
 
 # ------------------------------------------------------------------------------
 # network Events
 # ------------------------------------------------------------------------------
-- event_type: network.*
-  traits: 
+- event_type:
+    - neutron.create.*
+    - neutron.update.*
+  traits:
     <<: *neutron_traits
+    admin_state_up:
+      fields: payload.network.admin_state_up
+    id:
+      fields: payload.network.id
+    name:
+      fields: payload.network.name
+    provider_network_type:
+      fields: payload.network.'provider:network_type'
+    provider_physical_network:
+      fields: payload.network.'provider:physical_network'
+    provider_segmentation_id:
+      fields: payload.network.'provider:segmentation_id'
+    router_external:
+      fields: payload.network.router:external
+    shared:
+      fields: payload.network.shared
+    status:
+      fields: payload.network.status
+    subnets:
+      fields: payload.network.subnets
+    tenant_id:
+      fields: payload.network.tenant_id
+
+- event_type: network.delete.*
+  traits:
+    <<: *neutron_traits
+    network_id:
+      fields: payload.network_id
 
 # ------------------------------------------------------------------------------
 # port Events
 # ------------------------------------------------------------------------------
-- event_type: port.*
-  traits: 
+
+- event_type: port.delete.*
+  traits:
     <<: *neutron_traits
+    port_id:
+      fields: payload.port_id
+
+
+- event_type: 
+    - port.create.*
+    - port.update.*
+  traits:
+    <<: *neutron_traits
+    id:
+      fields: payload.port.id
+    name:
+      fields: payload.port.name
+    admin_state_up:
+      fields: payload.port.admin_state_up
+    allowed_address_pairs:
+      fields: payload.port.allowed_address_pairs
+    binding_host_id:
+      fields: payload.port.'binding:host_id'
+    binding_profile:
+      fields: payload.port.'binding:profile'
+    binding_vif_details:
+      fields: payload.port.'binding:vif_details'
+    binding_vif_type:
+      fields: payload.port.'binding:vif_type'
+    binding_vnic_type:
+      fields: payload.port.'binding:vnic_type'
+    device_id:
+      fields: payload.port.device_id
+    device_owner:
+      fields: payload.port.device_owner
+    extra_dhcp_opts:
+      fields: payload.port.extra_dhcp_opts
+    fixed_ips:
+      fields: payload.port.fixed_ips
+    mac_address:
+      fields: payload.port.mac_address
+    network_id:
+      fields: payload.port.network_id
+    security_groups:
+      fields: payload.port.security_groups
+    status:
+      fields: payload.port.status
+    tenant_id:
+      fields: payload.port.tenant_id
+
 
 # ------------------------------------------------------------------------------
 # router Events
 # ------------------------------------------------------------------------------
-- event_type: router.*
-  traits: 
+- event_type:
+    - router.create.*
+    - router.update.*
+  traits:
     <<: *neutron_traits
+    admin_state_up:
+      fields: payload.router.admin_state_up
+    distributed:
+      fields: payload.router.distributed
+    external_gateway_info:
+      fields: payload.router.external_gateway_info
+    ha:
+      fields: payload.router.ha
+    id:
+      fields: payload.router.id
+    name:
+      fields: payload.router.name
+    routes:
+      fields: payload.router.routes
+    status:
+      fields: payload.router.status
+    tenant_id:
+      fields: payload.router.tenant_id
+
+- event_type: router.delete.*
+  traits:
+    <<: *neutron_traits
+    router_id:
+      fields: payload.router_id
+
+- event_type: router.interface.*
+  traits:
+    <<: *neutron_traits
+    id:
+      fields: payload.router_interface.id
+    port_id:
+      fields: payload.router_interface.port_id
+    subnet_id:
+      fields: payload.router_interface.subnet_id
+    tenant_id:
+      fields: payload.router_interface.tenant_id
 
 # ------------------------------------------------------------------------------
 # security_group Events
 # ------------------------------------------------------------------------------
-- event_type: security_group.*
-  traits: 
+- event_type: 
+    - security_group.create.*
+    - security_group.update.*
+  traits:
     <<: *neutron_traits
+    description:
+      fields: payload.security_group.description
+    id:
+      fields: payload.security_group.id
+    name:
+      fields: payload.security_group.name
+    security_group_rules:
+      fields: payload.security_group.security_group_rules
+    tenant_id:
+      fields: payload.security_group.tenant_id
+
+- event_type: security_group.delete.*
+  traits:
+    <<: *neutron_traits
+    security_group_id:
+      fields: payload.security_group_id
 
 # ------------------------------------------------------------------------------
 # security_group_rule Events
 # ------------------------------------------------------------------------------
+
 - event_type: security_group_rule.*
-  traits: 
+  traits:
     <<: *neutron_traits
+    direction:
+      fields: payload.security_group_rule.direction
+    ethertype:
+      fields: payload.security_group_rule.ethertype
+    id:
+      fields: payload.security_group_rule.id
+    port_range_max:
+      fields: payload.security_group_rule.port_range_max
+    port_range_min:
+      fields: payload.security_group_rule.port_range_min
+    protocol:
+      fields: payload.security_group_rule.protocol
+    remote_group_id:
+      fields: payload.security_group_rule.remote_group_id
+    remote_ip_prefix:
+      fields: payload.security_group_rule.remote_ip_prefix
+    security_group_id:
+      fields: payload.security_group_rule.security_group_id
+    tenant_id:
+      fields: payload.security_group_rule.tenant_id
+
 
 # ------------------------------------------------------------------------------
 # subnet Events
 # ------------------------------------------------------------------------------
-- event_type: subnet.*
-  traits: 
+- event_type:
+    - subnet.create.*
+    - subnet.update.*
+  traits:
     <<: *neutron_traits
+    allocation_pools:
+      fields: payload.subnet.allocation_pools
+    cidr:
+      fields: payload.subnet.cidr
+    dns_nameservers:
+      fields: payload.subnet.dns_nameservers
+    enable_dhcp:
+      fields: payload.subnet.enable_dhcp
+    gateway_ip:
+      fields: payload.subnet.gateway_ip
+    host_routes:
+      fields: payload.subnet.host_routes
+    id:
+      fields: payload.subnet.id
+    ipv6_address_mode:
+      fields: payload.subnet.ipv6_address_mode
+    ipv6_ra_mode:
+      fields: payload.subnet.ipv6_ra_mode
+    ip_version:
+      fields: payload.subnet.ip_version
+    name:
+      fields: payload.subnet.name
+    network_id:
+      fields: payload.subnet.network_id
+    tenant_id:
+      fields: payload.subnet.tenant_id
+
+- event_type: subnet.delete.*
+  traits:
+    <<: *neutron_traits
+    subnet_id:
+      fields: payload.subnet_id
 
