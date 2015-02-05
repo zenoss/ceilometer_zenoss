@@ -5,7 +5,7 @@ Neutron Messaging
 * Create Messages
 * Update Messages
 * Delete Messages
-  
+
 All these events send valid JSON messages via AMQP to Zenoss.
 These events are full updates to the attributes.
 
@@ -26,7 +26,7 @@ Top Level Types
 * security_group_rule.*
 * subnet.*
 
-References: 
+References:
 
    * neutron/api/v2/attributes.py
    * http://developer.openstack.org/api-ref-networking-v2.html
@@ -57,7 +57,7 @@ EventsAMQPDataSource.processMessage::
       cache[device_id].add(value['data'], timestamp)
 
 It is then iterated over (Collections) in same::
-    
+
       for entry in cache[device_id].get():
 
 network.create.end (payload)::
@@ -135,7 +135,7 @@ subnet.update.start::
           "type": "event"
       }
 
-   
+
 event_type": "subnet.update.end"::
 
       {
@@ -319,44 +319,44 @@ Router event payloads on end::
 router.update.start::
 
       {'id': u'70e4150e-cc15-47fd-a777-5157ed769db4',
-       u'router': 
-          {u'external_gateway_info': 
+       u'router':
+          {u'external_gateway_info':
               {u'network_id': u'dce9ac6a-e9e2-436b-93bf-031600ef1339'}}}
 
-router.update.end (payload):: 
+router.update.end (payload)::
 
-      {'router': {'admin_state_up': True,
+      {'router': {
+                  'admin_state_up': True,
                   'distributed': False,
-                  'external_gateway_info': 
-                      {'enable_snat': True,
-                       'external_fixed_ips': [{'ip_address': u'192.168.117.233',
-                       'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
-                       'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'},
+                  'external_gateway_info': {'enable_snat': True, 'external_fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'},
                   'ha': False,
                   'id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
                   'name': u'router_to_heave',
                   'routes': [],
                   'status': u'ACTIVE',
-                  'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+                  'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
+                  }}
 
 
 router.interface.create::
 
-      {'router_interface': 
-          {'id': u'ad89936d-3d2f-4c63-942c-920760c994bb',
+      {'router_interface':
+           {
+           'id': u'ad89936d-3d2f-4c63-942c-920760c994bb',
            'port_id': '4688d778-0a6f-4883-b393-eee54bab95d1',
            'subnet_id': u'd3c18d0a-4876-4420-9020-824be2684156',
-           'tenant_id': u'f873d72ccd7744bfa8355c8833f203a2'}}
+           'tenant_id': u'f873d72ccd7744bfa8355c8833f203a2'
+           }}
 
 router.interface.delete::
 
       (Pdb) pprint.pprint(payload)
-      {'router_interface': 
+      {'router_interface':
           {'id': u'ed783e7d-8928-47ac-ac13-1736510703fe',
            'port_id': u'35324357-cc1e-4e79-bebb-790ad801ed7f',
            'subnet_id': u'0e8642f2-142f-453f-9f7e-357e8074142d',
            'tenant_id': u'1bfee2f15d8e4c9596192a1a9dee4c20'}}
-                  
+
 
 router.create.start::
 
@@ -366,7 +366,8 @@ router.create.start::
 
 router.create.end::
 
-      {'router': {'admin_state_up': True,
+      {'router': {
+            'admin_state_up': True,
             'distributed': False,
             'external_gateway_info': None,
             'ha': False,
@@ -374,15 +375,19 @@ router.create.end::
             'name': u'router_AB',
             'routes': [],
             'status': 'ACTIVE',
-            'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'}}
+            'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'
+            }}
 
 router.delete.end::
 
-      
       {'router_id': u'ed783e7d-8928-47ac-ac13-1736510703fe'}
 
 Port Events: Payload
 --------------------------------------------------------------------------------
+
+port.delete.end::
+
+      {'port_id': u'e584ce52-f7e1-4884-9801-f3cde90f32e3'}
 
 port.create.start::
 
@@ -442,20 +447,21 @@ subnet.create.end::
       # Address as payload.subnet.*
 
       (Pdb) result
-      {'subnet': 
-         {'name': 'bbbxxYY', 
+      {'subnet':
+         {
+          'allocation_pools': [{'start': '10.10.10.2', 'end': '10.10.10.254'}],
+          'cidr': '10.10.10.0/24',
+          'dns_nameservers': [],
+          'enable_dhcp': True,
+          'gateway_ip': '10.10.10.1',
+          'host_routes': [],
           'id': '27bad7ac-780f-4d90-aa7d-a4406eace55c'}
-          'network_id': '6e15368b-e2e4-4488-b282-efa8a3af016b', 
-          'tenant_id': 'dbb36d5137754461a26b970bdf8ac780', 
-          'allocation_pools': [{'start': '10.10.10.2', 'end': '10.10.10.254'}], 
-          'cidr': '10.10.10.0/24', 
-          'dns_nameservers': [], 
-          'enable_dhcp': True, 
-          'gateway_ip': '10.10.10.1',  
-          'host_routes': [], 
-          'ipv6_address_mode': None, 
-          'ipv6_ra_mode': None, 
-          'ip_version': 4L, 
+          'ipv6_address_mode': None,
+          'ipv6_ra_mode': None,
+          'ip_version': 4L,
+          'name': 'bbbxxYY',
+          'network_id': '6e15368b-e2e4-4488-b282-efa8a3af016b',
+          'tenant_id': 'dbb36d5137754461a26b970bdf8ac780',
        }
 
 subnet.delete.end::
@@ -472,38 +478,40 @@ security_group.delete.end::
 
 security_group.create.end::
 
-      {'security_group': 
-            {'description': u'test sg',                                                                           
-             'id': u'460cd81e-d918-46f7-877e-0c261efc870d',                                                       
-             'name': u'sg_nobodya',                                                                               
-             'security_group_rules': 
-                  [{'direction': u'egress',                                                                                                                      
-                    'ethertype': u'IPv4',                                                                                                                        
-                    'id': u'a7e54ea9-9eeb-4689-9107-b9367f8ae229',                                                                                               
-                    'port_range_max': None,                                                                                                                      
-                    'port_range_min': None,                                                                                                                      
-                    'protocol': None,                                                                                                                            
-                    'remote_group_id': None,                                                                                                                     
-                    'remote_ip_prefix': None,                                                                                                                    
-                    'security_group_id': u'460cd81e-d918-46f7-877e-0c261efc870d',                                                                                
-                    'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'},                                                                                           
-                   {'direction': u'egress',                                                                                                                      
-                    'ethertype': u'IPv6',                                                                                                                        
-                    'id': u'aa6c749a-b9ae-4f19-ae2a-7e7e19c9312f',                                                                                               
-                    'port_range_max': None,                                                                                                                      
-                    'port_range_min': None,                                                                                                                      
-                    'protocol': None,                                                                                                                            
-                    'remote_group_id': None,                                                                                                                     
-                    'remote_ip_prefix': None,                                                                                                                    
-                    'security_group_id': u'460cd81e-d918-46f7-877e-0c261efc870d',                                                                                
-                    'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}],                    
-      'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}} 
+      {'security_group':
+            {'description': u'test sg',
+             'id': u'460cd81e-d918-46f7-877e-0c261efc870d',
+             'name': u'sg_nobodya',
+             'security_group_rules':
+                  [{'direction': u'egress',
+                    'ethertype': u'IPv4',
+                    'id': u'a7e54ea9-9eeb-4689-9107-b9367f8ae229',
+                    'port_range_max': None,
+                    'port_range_min': None,
+                    'protocol': None,
+                    'remote_group_id': None,
+                    'remote_ip_prefix': None,
+                    'security_group_id': u'460cd81e-d918-46f7-877e-0c261efc870d',
+                    'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'},
+                   {'direction': u'egress',
+                    'ethertype': u'IPv6',
+                    'id': u'aa6c749a-b9ae-4f19-ae2a-7e7e19c9312f',
+                    'port_range_max': None,
+                    'port_range_min': None,
+                    'protocol': None,
+                    'remote_group_id': None,
+                    'remote_ip_prefix': None,
+                    'security_group_id': u'460cd81e-d918-46f7-877e-0c261efc870d',
+                    'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}],
+              'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
+            }}
 
 security_group_rule::
 
     (Pdb) pprint.pprint(payload)
-    {'security_group_rule': 
-        {'direction': u'ingress',
+    {'security_group_rule':
+        {
+         'direction': u'ingress',
          'ethertype': 'IPv4',
          'id': '72ed47e0-6975-4e8c-a3ce-1a0ac20862b8',
          'port_range_max': 53,
@@ -512,7 +520,8 @@ security_group_rule::
          'remote_group_id': None,
          'remote_ip_prefix': '0.0.0.0/0',
          'security_group_id': u'460cd81e-d918-46f7-877e-0c261efc870d',
-         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
+         }}
 
 IP Events
 ===============================================================================
@@ -525,19 +534,19 @@ FloatingIP Events look like::
     'floatingip.create.end'
 
     (Pdb) pprint.pprint(payload)
-    {'floatingip': 
+    {'floatingip':
          {
-         'fixed_ip_address': None,                                                
-         'floating_ip_address': u'192.168.117.234',                                
-         'floating_network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',           
-         'id': '75bf9a93-6faf-4799-8b2c-6bb695aa7b6f',                             
-         'port_id': None,                                                          
-         'router_id': None,                                                        
-         'status': 'DOWN',                                                         
+         'fixed_ip_address': None,
+         'floating_ip_address': u'192.168.117.234',
+         'floating_network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
+         'id': '75bf9a93-6faf-4799-8b2c-6bb695aa7b6f',
+         'port_id': None,
+         'router_id': None,
+         'status': 'DOWN',
          'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
          }
-    }              
- 
+    }
+
 
 
 FloatingIP Association Events
@@ -559,7 +568,7 @@ dhcp_agent.network.remove::
    {'agent': {'id': u'81c61c6a-8728-44c3-a779-5376182cb960',
             'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'}}
 
-   # Json output via AMQP 
+   # Json output via AMQP
    {
     "device": "mp8.osi",
     "data": {
