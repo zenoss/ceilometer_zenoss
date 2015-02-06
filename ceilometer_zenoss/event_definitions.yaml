@@ -119,8 +119,8 @@
 # network Events
 # ------------------------------------------------------------------------------
 - event_type:
-    - neutron.create.*
-    - neutron.update.*
+    - network.create.*
+    - network.update.*
   traits:
     <<: *neutron_traits
     admin_state_up:
@@ -163,7 +163,7 @@
       fields: payload.port_id
 
 
-- event_type: 
+- event_type:
     - port.create.*
     - port.update.*
   traits:
@@ -254,7 +254,7 @@
 # ------------------------------------------------------------------------------
 # security_group Events
 # ------------------------------------------------------------------------------
-- event_type: 
+- event_type:
     - security_group.create.*
     - security_group.update.*
   traits:
@@ -346,3 +346,99 @@
     subnet_id:
       fields: payload.subnet_id
 
+# ------------------------------------------------------------------------------
+# Firewall Events
+# ------------------------------------------------------------------------------
+
+- event_type:
+    - firewall_rule.create.*
+    - firewall_rule.update.*
+  traits:
+    <<: *neutron_traits
+    action:
+      fields: payload.firewall_rule.action
+    description:
+      fields: payload.firewall_rule.description
+    destination_ip_address:
+      fields: payload.firewall_rule.destination_ip_address
+    destination_port:
+      fields: payload.firewall_rule.destination_port
+    enabled:
+      fields: payload.firewall_rule.enabled
+    firewall_policy_id:
+      fields: payload.firewall_rule.firewall_policy_id
+    id:
+      fields: payload.firewall_rule.id
+    ip_version:
+      fields: payload.firewall_rule.ip_version
+    name:
+      fields: payload.firewall_rule.name
+    position:
+      fields: payload.firewall_rule.position
+    protocol:
+      fields: payload.firewall_rule.protocol
+    shared:
+      fields: payload.firewall_rule.shared
+    source_ip_address:
+      fields: payload.firewall_rule.source_ip_address
+    source_port:
+      fields: payload.firewall_rule.source_port
+    tenant_id:
+      fields: payload.firewall_rule.tenant_id
+
+- event_type: firewall_rule.delete.*
+  traits:
+    <<: *neutron_traits
+    firewall_rule_id:
+      fields: payload.firewall_rule_id
+
+- event_type:
+    - firewall_policy.create.*
+    - firewall_policy.update.*
+  traits:
+    <<: *neutron_traits
+    audited:
+      fields: payload.firewall_policy.audited
+    description:
+      fields: payload.firewall_policy.description
+    firewall_rules:
+      fields: payload.firewall_policy.firewall_rules
+    id:
+      fields: payload.firewall_policy.id
+    name:
+      fields: payload.firewall_policy.name
+    shared:
+      fields: payload.firewall_policy.shared
+    tenant_id:
+      fields: payload.firewall_policy.tenant_id
+
+- event_type: firewall_policy.delete.*
+  traits:
+    <<: *neutron_traits
+
+- event_type:
+    - firewall.create.*
+    - firewall.update.*
+  traits:
+    <<: *neutron_traits
+    admin_state_up:     
+      fields: payload.firewall.admin_state_up          
+    description:        
+      fields: payload.firewall.description             
+    firewall_policy_id: 
+      fields: payload.firewall.firewall_policy_id      
+    id:                 
+      fields: payload.firewall.id                      
+    name:               
+      fields: payload.firewall.name                    
+    status:             
+      fields: payload.firewall.status                  
+    tenant_id:          
+      fields: payload.firewall.tenant_id            
+
+- event_type: firewall.delete.*
+  traits:
+    <<: *neutron_traits
+    firewall_id:
+      fields: firewall_id
+       

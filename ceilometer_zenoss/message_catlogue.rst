@@ -667,3 +667,26 @@ meter::
       "type": "meter"
    }
 
+
+Firewall Events
+===================
+
+
+firewall_rule.create.end::
+
+      (Pdb) pprint.pprint(payload)
+      {'firewall_rule': {'action': u'allow',
+                         'description': '',
+                         'destination_ip_address': None,
+                         'destination_port': '80',
+                         'enabled': True,
+                         'firewall_policy_id': None,
+                         'id': '629d9c7e-5421-40b1-9ae5-fc92e50c8794',
+                         'ip_version': 4,
+                         'name': '',
+                         'position': None,
+                         'protocol': u'tcp',
+                         'shared': False,
+                         'source_ip_address': None,
+                         'source_port': None,
+                         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
