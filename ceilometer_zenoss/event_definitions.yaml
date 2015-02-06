@@ -136,7 +136,7 @@
     provider_segmentation_id:
       fields: payload.network.'provider:segmentation_id'
     router_external:
-      fields: payload.network.router:external
+      fields: payload.network.'router:external'
     shared:
       fields: payload.network.shared
     status:
