@@ -675,18 +675,56 @@ Firewall Events
 firewall_rule.create.end::
 
       (Pdb) pprint.pprint(payload)
-      {'firewall_rule': {'action': u'allow',
-                         'description': '',
-                         'destination_ip_address': None,
-                         'destination_port': '80',
-                         'enabled': True,
-                         'firewall_policy_id': None,
-                         'id': '629d9c7e-5421-40b1-9ae5-fc92e50c8794',
-                         'ip_version': 4,
-                         'name': '',
-                         'position': None,
-                         'protocol': u'tcp',
-                         'shared': False,
-                         'source_ip_address': None,
-                         'source_port': None,
-                         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+      {'firewall_rule': {
+               'action': u'allow',                                          
+               'description': '',                                           
+               'destination_ip_address': None,                              
+               'destination_port': '80',                                    
+               'enabled': True,                                             
+               'firewall_policy_id': None,                                  
+               'id': '629d9c7e-5421-40b1-9ae5-fc92e50c8794',                
+               'ip_version': 4,                                             
+               'name': '',                                                  
+               'position': None,                                            
+               'protocol': u'tcp',                                          
+               'shared': False,                                             
+               'source_ip_address': None,                                   
+               'source_port': None,                                         
+               'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}} 
+
+
+firewall_rule.delete.end::
+
+      {'firewall_rule_id': u'6e257aee-f881-4db5-ae95-48a78e0cd519'}
+
+firewall_policy.create.end::
+
+      {'firewall_policy': 
+          { 
+            'audited': False,
+            'description': '',
+            'firewall_rules': [u'6e257aee-f881-4db5-ae95-48a78e0cd519', u'7661788c-20b1-4e42-afab-b3479d18afff'],
+            'id': 'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26',
+            'name': u'web',
+            'shared': False,
+            'tenant_id': u'dbb36d5137754461a26b970bdf8ac780' }}
+
+firewall_policy.delete.end::
+
+      {'firewall_policy_id': u'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26'}
+
+firewall.create.end::
+
+      {'firewall': {
+          'admin_state_up': True,
+          'description': '',
+          'firewall_policy_id': u'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26',
+          'id': '76a9e5c0-07dd-4106-bd96-18f3420f534b',
+          'name': '',
+          'status': 'PENDING_CREATE',
+          'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
+
+firewall.delete.end::
+
+      {'firewall_id': u'76a9e5c0-07dd-4106-bd96-18f3420f534b'}
+
