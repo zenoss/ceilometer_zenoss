@@ -717,7 +717,8 @@ firewall_policy.delete.end::
 
       {'firewall_policy_id': u'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26'}
 
-firewall.create.end: firewall.update.end::
+firewall.create.end::
+firewall.update.end::
 
       {'firewall': {
           'admin_state_up': True,
