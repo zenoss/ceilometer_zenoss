@@ -25,6 +25,9 @@ Top Level Types
 * security_group.*
 * security_group_rule.*
 * subnet.*
+* firewall_rule.*
+* firewall_policy.*
+* firewall.*
 
 References:
 
@@ -672,7 +675,7 @@ Firewall Events
 ===================
 
 
-firewall_rule.create.end::
+firewall_rule.create.end, firewall_rule.update.end::
 
       (Pdb) pprint.pprint(payload)
       {'firewall_rule': {
@@ -698,6 +701,7 @@ firewall_rule.delete.end::
       {'firewall_rule_id': u'6e257aee-f881-4db5-ae95-48a78e0cd519'}
 
 firewall_policy.create.end::
+firewall_policy.update.end::
 
       {'firewall_policy': 
           { 
@@ -714,6 +718,7 @@ firewall_policy.delete.end::
       {'firewall_policy_id': u'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26'}
 
 firewall.create.end::
+firewall.update.end::
 
       {'firewall': {
           'admin_state_up': True,
