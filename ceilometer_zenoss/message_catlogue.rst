@@ -65,7 +65,8 @@ It is then iterated over (Collections) in same::
 
 network.create.end (payload)::
 
-      {'network': {'admin_state_up': True,
+      {'network': {
+                  'admin_state_up': True,
                   'id': '171cddd3-6653-4507-bccf-9ad4dff5c7e0',
                   'name': u'xxx',
                   'provider:network_type': u'gre',
@@ -412,8 +413,6 @@ port.create.end::
 
       (Pdb) pprint.pprint(payload)
       {'port': {
-               'id': u'c79bacd3-2659-49d6-97fb-299cfa3dc7a3',
-               'name': u'bozo_port',
                'admin_state_up': True,
                'allowed_address_pairs': [],
                'binding:host_id': u'mp8.zenoss.loc',
@@ -425,7 +424,9 @@ port.create.end::
                'device_owner': u'network:router_gateway',
                'extra_dhcp_opts': [],
                'fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
+               'id': u'c79bacd3-2659-49d6-97fb-299cfa3dc7a3',
                'mac_address': u'fa:16:3e:32:f6:fa',
+               'name': u'bozo_port',
                'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
                'security_groups': [],
                'status': u'DOWN',
