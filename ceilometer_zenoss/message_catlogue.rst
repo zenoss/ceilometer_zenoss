@@ -558,6 +558,16 @@ floatingip.create.end::
                 'status': 'DOWN',
                 'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
 
+floatingip.delete.start::
+
+    (Pdb) event_type ; payload
+    {'floatingip_id': u'9330d094-4c50-4023-a8fd-83f7e0dd0826'}
+
+floatingip.delete.end::
+
+    payload: 
+    {'floatingip_id': u'87b250d7-ffeb-4ebf-a164-501ccb5e9af5'}
+
 
 FloatingIP Association Events
 --------------------------------------------------------------------------------
