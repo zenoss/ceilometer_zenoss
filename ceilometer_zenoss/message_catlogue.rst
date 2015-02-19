@@ -16,7 +16,10 @@ These events have these event types:
 Top Level Types
 --------------------------------------------------------------------------------
 
-* dhcp_agent.network.* [add, delete]
+* dhcp_agent.network.* [create, delete]
+* firewall.*
+* firewall_policy.*
+* firewall_rule.*
 * floatingip.*
 * network.*
 * port.*
@@ -62,7 +65,8 @@ It is then iterated over (Collections) in same::
 
 network.create.end (payload)::
 
-      {'network': {'admin_state_up': True,
+      {'network': {
+                  'admin_state_up': True,
                   'id': '171cddd3-6653-4507-bccf-9ad4dff5c7e0',
                   'name': u'xxx',
                   'provider:network_type': u'gre',
@@ -328,7 +332,11 @@ router.update.end (payload)::
       {'router': {
                   'admin_state_up': True,
                   'distributed': False,
-                  'external_gateway_info': {'enable_snat': True, 'external_fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'},
+                  'external_gateway_info': 
+                      {'enable_snat': True, 
+                       'external_fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 
+                       'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'
+                      },
                   'ha': False,
                   'id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
                   'name': u'router_to_heave',
@@ -405,8 +413,6 @@ port.create.end::
 
       (Pdb) pprint.pprint(payload)
       {'port': {
-               'id': u'c79bacd3-2659-49d6-97fb-299cfa3dc7a3',
-               'name': u'bozo_port',
                'admin_state_up': True,
                'allowed_address_pairs': [],
                'binding:host_id': u'mp8.zenoss.loc',
@@ -418,7 +424,9 @@ port.create.end::
                'device_owner': u'network:router_gateway',
                'extra_dhcp_opts': [],
                'fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
+               'id': u'c79bacd3-2659-49d6-97fb-299cfa3dc7a3',
                'mac_address': u'fa:16:3e:32:f6:fa',
+               'name': u'bozo_port',
                'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
                'security_groups': [],
                'status': u'DOWN',
@@ -433,7 +441,8 @@ Subnet events::
       (Pdb) event_type
       'subnet.create.start'
       (Pdb) pprint.pprint(payload)
-      {u'subnet': {u'cidr': u'10.20.50.0/24',
+      {u'subnet': {
+                  u'cidr': u'10.20.50.0/24',
                   u'enable_dhcp': True,
                   u'gateway_ip': u'10.20.50.1',
                   u'ip_version': 4,
@@ -530,23 +539,24 @@ FloatingIP Events
 --------------------------------------------------------------------------------
 FloatingIP Events look like::
 
-    (Pdb) pprint.pprint(event_type)
-    'floatingip.create.end'
+floatingip.create.start::
+
+    {u'floatingip': {u'fixed_ip_address': u'10.1.7.100',
+                 u'floating_network_id': u'1fb467ad-a996-4520-b941-27962e152a7e',
+                 u'port_id': u'edd51762-9bd9-498a-a1ae-6ff7941622c9'}}
+
+floatingip.create.end::
 
     (Pdb) pprint.pprint(payload)
-    {'floatingip':
-         {
-         'fixed_ip_address': None,
-         'floating_ip_address': u'192.168.117.234',
-         'floating_network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
-         'id': '75bf9a93-6faf-4799-8b2c-6bb695aa7b6f',
-         'port_id': None,
-         'router_id': None,
-         'status': 'DOWN',
-         'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'
-         }
-    }
-
+    {'floatingip': {
+                'fixed_ip_address': u'10.1.7.100',
+                'floating_ip_address': u'192.168.117.229',
+                'floating_network_id': u'1fb467ad-a996-4520-b941-27962e152a7e',
+                'id': 'd605daeb-4353-4250-8d72-76a702b6d75f',
+                'port_id': u'edd51762-9bd9-498a-a1ae-6ff7941622c9',
+                'router_id': u'c28211ba-2d78-4aef-91a7-6339cf6b97bc',
+                'status': 'DOWN',
+                'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
 
 
 FloatingIP Association Events
@@ -672,7 +682,7 @@ Firewall Events
 ===================
 
 
-firewall_rule.create.end::
+firewall_rule.create.end, firewall_rule.update.end::
 
       (Pdb) pprint.pprint(payload)
       {'firewall_rule': {
@@ -698,6 +708,7 @@ firewall_rule.delete.end::
       {'firewall_rule_id': u'6e257aee-f881-4db5-ae95-48a78e0cd519'}
 
 firewall_policy.create.end::
+firewall_policy.update.end::
 
       {'firewall_policy': 
           { 
@@ -714,6 +725,7 @@ firewall_policy.delete.end::
       {'firewall_policy_id': u'd598932e-e0ef-4f5d-bd4c-ce1abb40ba26'}
 
 firewall.create.end::
+firewall.update.end::
 
       {'firewall': {
           'admin_state_up': True,
