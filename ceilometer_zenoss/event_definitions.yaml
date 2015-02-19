@@ -95,7 +95,10 @@
 # ------------------------------------------------------------------------------
 # FloatingIP
 # ------------------------------------------------------------------------------
-- event_type: floatingip.*
+- event_type:
+    - floatingip.create.*
+    - floatingip.update.*
+    - floatingip.delete.*
   traits:
     <<: *neutron_traits
     fixed_ip_address:
@@ -121,6 +124,7 @@
 - event_type:
     - network.create.*
     - network.update.*
+    - network.delete.*
   traits:
     <<: *neutron_traits
     admin_state_up:
@@ -146,26 +150,14 @@
     tenant_id:
       fields: payload.network.tenant_id
 
-- event_type: network.delete.*
-  traits:
-    <<: *neutron_traits
-    network_id:
-      fields: payload.network_id
-
 # ------------------------------------------------------------------------------
 # port Events
 # ------------------------------------------------------------------------------
 
-- event_type: port.delete.*
-  traits:
-    <<: *neutron_traits
-    port_id:
-      fields: payload.port_id
-
-
 - event_type:
     - port.create.*
     - port.update.*
+    - port.delete.*
   traits:
     <<: *neutron_traits
     id:
@@ -212,6 +204,7 @@
 - event_type:
     - router.create.*
     - router.update.*
+    - router.delete.*
   traits:
     <<: *neutron_traits
     admin_state_up:
@@ -233,12 +226,6 @@
     tenant_id:
       fields: payload.router.tenant_id
 
-- event_type: router.delete.*
-  traits:
-    <<: *neutron_traits
-    router_id:
-      fields: payload.router_id
-
 - event_type: router.interface.*
   traits:
     <<: *neutron_traits
@@ -257,6 +244,7 @@
 - event_type:
     - security_group.create.*
     - security_group.update.*
+    - security_group.delete.*
   traits:
     <<: *neutron_traits
     description:
@@ -269,12 +257,6 @@
       fields: payload.security_group.security_group_rules
     tenant_id:
       fields: payload.security_group.tenant_id
-
-- event_type: security_group.delete.*
-  traits:
-    <<: *neutron_traits
-    security_group_id:
-      fields: payload.security_group_id
 
 # ------------------------------------------------------------------------------
 # security_group_rule Events
@@ -311,6 +293,7 @@
 - event_type:
     - subnet.create.*
     - subnet.update.*
+    - subnet.delete.*
   traits:
     <<: *neutron_traits
     allocation_pools:
@@ -340,12 +323,6 @@
     tenant_id:
       fields: payload.subnet.tenant_id
 
-- event_type: subnet.delete.*
-  traits:
-    <<: *neutron_traits
-    subnet_id:
-      fields: payload.subnet_id
-
 # ------------------------------------------------------------------------------
 # Firewall Events
 # ------------------------------------------------------------------------------
@@ -353,6 +330,7 @@
 - event_type:
     - firewall_rule.create.*
     - firewall_rule.update.*
+    - firewall_rule.delete.*
   traits:
     <<: *neutron_traits
     action:
@@ -386,15 +364,10 @@
     tenant_id:
       fields: payload.firewall_rule.tenant_id
 
-- event_type: firewall_rule.delete.*
-  traits:
-    <<: *neutron_traits
-    firewall_rule_id:
-      fields: payload.firewall_rule_id
-
 - event_type:
     - firewall_policy.create.*
     - firewall_policy.update.*
+    - firewall_policy.delete.*
   traits:
     <<: *neutron_traits
     audited:
@@ -412,13 +385,10 @@
     tenant_id:
       fields: payload.firewall_policy.tenant_id
 
-- event_type: firewall_policy.delete.*
-  traits:
-    <<: *neutron_traits
-
 - event_type:
     - firewall.create.*
     - firewall.update.*
+    - firewall.delete.*
   traits:
     <<: *neutron_traits
     admin_state_up:     
@@ -436,9 +406,3 @@
     tenant_id:          
       fields: payload.firewall.tenant_id            
 
-- event_type: firewall.delete.*
-  traits:
-    <<: *neutron_traits
-    firewall_id:
-      fields: firewall_id
-       
