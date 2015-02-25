@@ -750,3 +750,32 @@ firewall.delete.end::
 
       {'firewall_id': u'76a9e5c0-07dd-4106-bd96-18f3420f534b'}
 
+
+Keystone Events:
+-----------------------------------------------------------------------------
+
+(Pdb) event_type
+'identity.project.deleted'::
+
+   (Pdb) pp(payload)
+   {'resource_info': u'4220802f7daf41e98b912fa99e51ac82'}
+
+(Pdb) event_type
+'identity.project.created'::
+
+   (Pdb) pp(payload)
+   {'resource_info': '9fc63b96892b4e47a330946b355d7913'}
+
+
+event_type: 'identity.user.created'::
+
+    payload: {'resource_info': '340df92410db4629a75030eeed3aba6b'}
+
+event_type: 'identity.user.updated'::
+
+    payload: {'resource_info': u'340df92410db4629a75030eeed3aba6b'}
+
+event_type: 'identity.user.updated'::
+
+    payload: {'resource_info': u'340df92410db4629a75030eeed3aba6b'}
+
