@@ -63,6 +63,19 @@ It is then iterated over (Collections) in same::
 
       for entry in cache[device_id].get():
 
+network.create.start::
+
+      {u'network': {
+                    u'admin_state_up': True,
+                    u'name': u'hello_net',
+                    u'provider:network_type': u'gre',
+                    u'provider:segmentation_id': 23424,
+                    u'router:external': False,
+                    u'shared': False,
+                    u'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'
+                    }}
+
+
 network.create.end (payload)::
 
       {'network': {
