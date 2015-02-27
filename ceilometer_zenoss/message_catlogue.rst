@@ -347,8 +347,10 @@ router.update.end (payload)::
                   'distributed': False,
                   'external_gateway_info': 
                       {'enable_snat': True, 
-                       'external_fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 
-                       'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'
+                       'external_fixed_ips': 
+                           [{'ip_address': u'192.168.117.233', 
+                             'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 
+                             'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'
                       },
                   'ha': False,
                   'id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
