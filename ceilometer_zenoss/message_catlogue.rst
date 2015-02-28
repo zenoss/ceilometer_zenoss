@@ -405,6 +405,86 @@ router.delete.end::
 
       {'router_id': u'ed783e7d-8928-47ac-ac13-1736510703fe'}
 
+
+router.update.end (json)::
+
+      {
+      "device": "mp8.osi",
+      "data": {
+         "traits": [
+            {
+            "dtype": 1,
+            "name": "external_gateway_info",
+            "value": "{u'network_id': u'10a893c1-01a6-438a-b231-3d5102cbc639', u'enable_snat': True, u'external_fixed_ips': [{u'subnet_id': u'f2d8864a-0efb-4667-9194-7a6e3b9a7bb2', u'ip_address': u'192.168.117.226'}]}"
+            },
+            {
+            "dtype": 1,
+            "name": "status",
+            "value": "ACTIVE"
+            },
+            {
+            "dtype": 1,
+            "name": "event_type",
+            "value": "router.update.end"
+            },
+            {
+            "dtype": 1,
+            "name": "service",
+            "value": "network.mp8.zenoss.loc"
+            },
+            {
+            "dtype": 1,
+            "name": "admin_state_up",
+            "value": "False"
+            },
+            {
+            "dtype": 1,
+            "name": "tenant_id",
+            "value": "49adcfb63f4640038498be2bd417614e"
+            },
+            {
+            "dtype": 1,
+            "name": "distributed",
+            "value": "False"
+            },
+            {
+            "dtype": 1,
+            "name": "priority",
+            "value": "info"
+            },
+            {
+            "dtype": 1,
+            "name": "request_id",
+            "value": "req-a491923d-92b9-4982-b1e4-04db848bad49"
+            },
+            {
+            "dtype": 1,
+            "name": "routes",
+            "value": "[]"
+            },
+            {
+            "dtype": 1,
+            "name": "ha",
+            "value": "False"
+            },
+            {
+            "dtype": 1,
+            "name": "id",
+            "value": "376cea18-32c1-43f7-bbd5-5201bc322812"
+            },
+            {
+            "dtype": 1,
+            "name": "name",
+            "value": "router_C"
+            }
+         ],
+         "generated": "2015-02-27T19:58:54.532868",
+         "event_type": "router.update.end",
+         "message_id": "1c176b65-c887-4a3c-b2aa-31336eb51528"
+      },
+      "type": "event"
+      }
+
 Port Events: Payload
 --------------------------------------------------------------------------------
 
@@ -556,9 +636,11 @@ FloatingIP Events look like::
 
 floatingip.create.start::
 
-    {u'floatingip': {u'fixed_ip_address': u'10.1.7.100',
-                 u'floating_network_id': u'1fb467ad-a996-4520-b941-27962e152a7e',
-                 u'port_id': u'edd51762-9bd9-498a-a1ae-6ff7941622c9'}}
+    {u'floatingip': {
+                     u'fixed_ip_address': u'10.1.7.100',
+                     u'floating_network_id': u'1fb467ad-a996-4520-b941-27962e152a7e',
+                     u'port_id': u'edd51762-9bd9-498a-a1ae-6ff7941622c9'
+                     }}
 
 floatingip.create.end::
 
