@@ -123,6 +123,26 @@ network.create.end::
 Update Events
 --------------------
 
+event_type 'subnet.create.start'::
+
+      Pdb) pp(payload)
+      {u'subnet': {u'cidr': u'12.15.15.0/24',
+                   u'enable_dhcp': True,
+                   u'gateway_ip': None,
+                   u'ip_version': 4,
+                   u'name': u'bbbxx',
+                   u'network_id': u'10a893c1-01a6-438a-b231-3d5102cbc639',
+                   u'tenant_id': u'0f7b5d96594b4446833ebaa12167ae0f'}}
+
+(Pdb) event_type 'subnet.update.start'::
+
+      (Pdb) pp(payload)
+      {'id': u'4cd009f8-a8e3-495e-b308-1a15698da1a5',
+       u'subnet': {u'dns_nameservers': [],
+                   u'enable_dhcp': True,
+                   u'host_routes': [],
+                   u'name': u'bbbxxyy'}}
+
 subnet.update.start::
 
       {
@@ -347,10 +367,10 @@ router.update.end (payload)::
                   'distributed': False,
                   'external_gateway_info': 
                       {'enable_snat': True, 
+                       'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
                        'external_fixed_ips': 
                            [{'ip_address': u'192.168.117.233', 
-                             'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}], 
-                             'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'
+                             'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}]
                       },
                   'ha': False,
                   'id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
