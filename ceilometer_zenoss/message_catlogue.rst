@@ -365,11 +365,11 @@ router.update.end (payload)::
       {'router': {
                   'admin_state_up': True,
                   'distributed': False,
-                  'external_gateway_info': 
-                      {'enable_snat': True, 
+                  'external_gateway_info':
+                      {'enable_snat': True,
                        'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
-                       'external_fixed_ips': 
-                           [{'ip_address': u'192.168.117.233', 
+                       'external_fixed_ips':
+                           [{'ip_address': u'192.168.117.233',
                              'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}]
                       },
                   'ha': False,
@@ -682,7 +682,7 @@ floatingip.delete.start::
 
 floatingip.delete.end::
 
-    payload: 
+    payload:
     {'floatingip_id': u'87b250d7-ffeb-4ebf-a164-501ccb5e9af5'}
 
 
@@ -813,21 +813,21 @@ firewall_rule.create.end, firewall_rule.update.end::
 
       (Pdb) pprint.pprint(payload)
       {'firewall_rule': {
-               'action': u'allow',                                          
-               'description': '',                                           
-               'destination_ip_address': None,                              
-               'destination_port': '80',                                    
-               'enabled': True,                                             
-               'firewall_policy_id': None,                                  
-               'id': '629d9c7e-5421-40b1-9ae5-fc92e50c8794',                
-               'ip_version': 4,                                             
-               'name': '',                                                  
-               'position': None,                                            
-               'protocol': u'tcp',                                          
-               'shared': False,                                             
-               'source_ip_address': None,                                   
-               'source_port': None,                                         
-               'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}} 
+               'action': u'allow',
+               'description': '',
+               'destination_ip_address': None,
+               'destination_port': '80',
+               'enabled': True,
+               'firewall_policy_id': None,
+               'id': '629d9c7e-5421-40b1-9ae5-fc92e50c8794',
+               'ip_version': 4,
+               'name': '',
+               'position': None,
+               'protocol': u'tcp',
+               'shared': False,
+               'source_ip_address': None,
+               'source_port': None,
+               'tenant_id': u'dbb36d5137754461a26b970bdf8ac780'}}
 
 
 firewall_rule.delete.end::
@@ -837,8 +837,8 @@ firewall_rule.delete.end::
 firewall_policy.create.end::
 firewall_policy.update.end::
 
-      {'firewall_policy': 
-          { 
+      {'firewall_policy':
+          {
             'audited': False,
             'description': '',
             'firewall_rules': [u'6e257aee-f881-4db5-ae95-48a78e0cd519', u'7661788c-20b1-4e42-afab-b3479d18afff'],
@@ -896,3 +896,217 @@ event_type: 'identity.user.updated'::
 
     payload: {'resource_info': u'340df92410db4629a75030eeed3aba6b'}
 
+
+Instance Events
+-------------------------------------------------------------------------------
+
+compute.instance.update::
+
+   {
+   "traits": [
+      {
+         "dtype": 1,
+         "name": "state_description",
+         "value": ""
+      },
+      {
+         "dtype": 2,
+         "name": "memory_mb",
+         "value": 64
+      },
+      {
+         "dtype": 2,
+         "name": "ephemeral_gb",
+         "value": 0
+      },
+      {
+         "dtype": 1,
+         "name": "user_id",
+         "value": "fb45e55b12754390ac530341256cab60"
+      },
+      {
+         "dtype": 1,
+         "name": "service",
+         "value": "None"
+      },
+      {
+         "dtype": 1,
+         "name": "priority",
+         "value": "info"
+      },
+      {
+         "dtype": 1,
+         "name": "state",
+         "value": "active"
+      },
+      {
+         "dtype": 1,
+         "name": "old_state",
+         "value": "active"
+      },
+      {
+         "dtype": 4,
+         "name": "launched_at",
+         "value": "2015-04-17T22:15:24.000000"
+      },
+      {
+         "dtype": 1,
+         "name": "flavor_name",
+         "value": "tiny"
+      },
+      {
+         "dtype": 2,
+         "name": "disk_gb",
+         "value": 0
+      },
+      {
+         "dtype": 1,
+         "name": "display_name",
+         "value": "bogus122"
+      },
+      {
+         "dtype": 2,
+         "name": "root_gb",
+         "value": 0
+      },
+      {
+         "dtype": 1,
+         "name": "tenant_id",
+         "value": "dbb36d5137754461a26b970bdf8ac780"
+      },
+      {
+         "dtype": 1,
+         "name": "instance_id",
+         "value": "d9c87692-9590-4313-b97a-132d1cc6b51a"
+      },
+      {
+         "dtype": 2,
+         "name": "vcpus",
+         "value": 1
+      },
+      {
+         "dtype": 1,
+         "name": "host_name",
+         "value": "mp8.zenoss.loc"
+      },
+      {
+         "dtype": 1,
+         "name": "request_id",
+         "value": "req-ff00f04c-e1f7-4acb-97d2-f0bd40bda411"
+      }
+   ],
+   "generated": "2015-04-22T17:46:53.428072",
+   "event_type": "compute.instance.update",
+   "message_id": "5e0bcd5d-1b64-4997-b293-700fe6b6fa1a"
+   }
+
+
+"event_type": "compute.instance.create.end"::
+
+   {
+   "device": "mp8.osi",
+   "data": {
+      "traits": [
+         {
+         "dtype": 1,
+         "name": "state_description",
+         "value": ""
+         },
+         {
+         "dtype": 2,
+         "name": "memory_mb",
+         "value": 64
+         },
+         {
+         "dtype": 2,
+         "name": "ephemeral_gb",
+         "value": 0
+         },
+         {
+         "dtype": 1,
+         "name": "fixed_ips",
+         "value": "[{u'version': 4,
+                     u'vif_mac': u'fa:16:3e:35:99:b1',
+                     u'floating_ips': [],
+                     u'label': u'network_public',
+                     u'meta': {},
+                     u'address': u'10.1.2.13',
+                     u'type': u'fixed'}]"
+         },
+         {
+         "dtype": 1,
+         "name": "user_id",
+         "value": "fb45e55b12754390ac530341256cab60"
+         },
+         {
+         "dtype": 1,
+         "name": "service",
+         "value": "compute"
+         },
+         {
+         "dtype": 1,
+         "name": "priority",
+         "value": "info"
+         },
+         {
+         "dtype": 1,
+         "name": "state",
+         "value": "active"
+         },
+         {
+         "dtype": 4,
+         "name": "launched_at",
+         "value": "2015-04-22T18:12:33.447644"
+         },
+         {
+         "dtype": 1,
+         "name": "flavor_name",
+         "value": "tiny"
+         },
+         {
+         "dtype": 2,
+         "name": "disk_gb",
+         "value": 0
+         },
+         {
+         "dtype": 1,
+         "name": "display_name",
+         "value": "bogus"
+         },
+         {
+         "dtype": 2,
+         "name": "root_gb",
+         "value": 0
+         },
+         {
+         "dtype": 1,
+         "name": "tenant_id",
+         "value": "dbb36d5137754461a26b970bdf8ac780"
+         },
+         {
+         "dtype": 1,
+         "name": "instance_id",
+         "value": "3b5ea38c-51fd-43f4-a9f7-7b876e9561e4"
+         },
+         {
+         "dtype": 2,
+         "name": "vcpus",
+         "value": 1
+         },
+         {
+         "dtype": 1,
+         "name": "host_name",
+         "value": "mp8.zenoss.loc"
+         },
+         {
+         "dtype": 1,
+         "name": "request_id",
+         "value": "req-184c803c-bf92-46f9-9aeb-fac007d4e049"
+         }
+      ],
+      "generated": "2015-04-22T18:12:34.202399",
+      "event_type": "compute.instance.create.end",
+      "message_id": "80fbf56b-b3d4-40c9-968e-f6e4ee8042c8"
+   },
+   "type": "event"
+   }
