@@ -423,7 +423,8 @@
 - event_type: firewall_policy.delete.*
   traits:
     <<: *neutron_traits
-    id: payload.firewall_policy_id
+    id: 
+      fields: payload.firewall_policy_id
 
 - event_type:
     - firewall.create.*
