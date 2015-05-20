@@ -94,7 +94,7 @@ network.create.end (payload)::
 network.create.end::
 
    {
-      "device": "mp8.osi",
+      "device": "warehouse.osi",
       "data": {
          "traits": [
                {
@@ -105,7 +105,7 @@ network.create.end::
                {
                   "dtype": 1,
                   "name": "service",
-                  "value": "network.mp8.zenoss.loc"
+                  "value": "network.warehouse.example.com"
                },
                {
                   "dtype": 1,
@@ -146,7 +146,7 @@ event_type 'subnet.create.start'::
 subnet.update.start::
 
       {
-          "device": "mp8.osi",
+          "device": "warehouse.osi",
           "data": {
               "traits": [
                   {
@@ -157,7 +157,7 @@ subnet.update.start::
                   {
                       "dtype": 1,
                       "name": "service",
-                      "value": "network.mp8.zenoss.loc"
+                      "value": "network.warehouse.example.com"
                   },
                   {
                       "dtype": 1,
@@ -176,7 +176,7 @@ subnet.update.start::
 event_type": "subnet.update.end"::
 
       {
-          "device": "mp8.osi",
+          "device": "warehouse.osi",
           "data": {
               "traits": [
                   {
@@ -187,7 +187,7 @@ event_type": "subnet.update.end"::
                   {
                       "dtype": 1,
                       "name": "service",
-                      "value": "network.mp8.zenoss.loc"
+                      "value": "network.warehouse.example.com"
                   },
                   {
                       "dtype": 1,
@@ -206,7 +206,7 @@ event_type": "subnet.update.end"::
 network.update.start::
 
       {
-          "device": "mp8.osi",
+          "device": "warehouse.osi",
           "data": {
               "traits": [
                   {
@@ -217,7 +217,7 @@ network.update.start::
                   {
                       "dtype": 1,
                       "name": "service",
-                      "value": "network.mp8.zenoss.loc"
+                      "value": "network.warehouse.example.com"
                   },
                   {
                       "dtype": 1,
@@ -235,7 +235,7 @@ network.update.start::
 network.update.end::
 
       {
-         "device": "mp8.osi",
+         "device": "warehouse.osi",
          "data": {
             "traits": [
                   {
@@ -246,7 +246,7 @@ network.update.end::
                   {
                      "dtype": 1,
                      "name": "service",
-                     "value": "network.mp8.zenoss.loc"
+                     "value": "network.warehouse.example.com"
                   },
                   {
                      "dtype": 1,
@@ -267,7 +267,7 @@ Delete Events
 network.delete.start::
 
       {
-         "device": "mp8.osi",
+         "device": "warehouse.osi",
          "data": {
             "traits": [
                   {
@@ -278,7 +278,7 @@ network.delete.start::
                   {
                      "dtype": 1,
                      "name": "service",
-                     "value": "network.mp8.zenoss.loc"
+                     "value": "network.warehouse.example.com"
                   },
                   {
                      "dtype": 1,
@@ -299,7 +299,7 @@ network.delete.end::
       payload: {'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b'}
 
       {
-         "device": "mp8.osi",
+         "device": "warehouse.osi",
          "data": {
             "traits": [
                   {
@@ -310,7 +310,7 @@ network.delete.end::
                   {
                      "dtype": 1,
                      "name": "service",
-                     "value": "network.mp8.zenoss.loc"
+                     "value": "network.warehouse.example.com"
                   },
                   {
                      "dtype": 1,
@@ -369,7 +369,7 @@ router.update.end (payload)::
                       {'enable_snat': True,
                        'network_id': u'acb6ea67-4ee2-4d11-b3be-b90ce7232c4b',
                        'external_fixed_ips':
-                           [{'ip_address': u'192.168.117.233',
+                           [{'ip_address': u'192.168.1.233',
                              'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}]
                       },
                   'ha': False,
@@ -429,13 +429,13 @@ router.delete.end::
 router.update.end (json)::
 
       {
-      "device": "mp8.osi",
+      "device": "warehouse.osi",
       "data": {
          "traits": [
             {
             "dtype": 1,
             "name": "external_gateway_info",
-            "value": "{u'network_id': u'10a893c1-01a6-438a-b231-3d5102cbc639', u'enable_snat': True, u'external_fixed_ips': [{u'subnet_id': u'f2d8864a-0efb-4667-9194-7a6e3b9a7bb2', u'ip_address': u'192.168.117.226'}]}"
+            "value": "{u'network_id': u'10a893c1-01a6-438a-b231-3d5102cbc639', u'enable_snat': True, u'external_fixed_ips': [{u'subnet_id': u'f2d8864a-0efb-4667-9194-7a6e3b9a7bb2', u'ip_address': u'192.168.1.226'}]}"
             },
             {
             "dtype": 1,
@@ -450,7 +450,7 @@ router.update.end (json)::
             {
             "dtype": 1,
             "name": "service",
-            "value": "network.mp8.zenoss.loc"
+            "value": "network.warehouse.example.com"
             },
             {
             "dtype": 1,
@@ -516,7 +516,7 @@ port.create.start::
 
       {u'port': {
                  u'admin_state_up': True,
-                 u'binding:host_id': u'mp8.zenoss.loc',
+                 u'binding:host_id': u'warehouse.example.com',
                  u'device_id': u'23863c1e-2dff-4c96-9ba4-13d07f1f4abf',
                  u'device_owner': u'compute:None',
                  u'network_id': u'dce9ac6a-e9e2-436b-93bf-031600ef1339',
@@ -530,7 +530,7 @@ port.create.end::
       {'port': {
                'admin_state_up': True,
                'allowed_address_pairs': [],
-               'binding:host_id': u'mp8.zenoss.loc',
+               'binding:host_id': u'warehouse.example.com',
                'binding:profile': {},
                'binding:vif_details': {u'ovs_hybrid_plug': True, u'port_filter': True},
                'binding:vif_type': u'ovs',
@@ -538,7 +538,7 @@ port.create.end::
                'device_id': u'd1e2602e-8fe3-432e-972a-c1acd799caa6',
                'device_owner': u'network:router_gateway',
                'extra_dhcp_opts': [],
-               'fixed_ips': [{'ip_address': u'192.168.117.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
+               'fixed_ips': [{'ip_address': u'192.168.1.233', 'subnet_id': u'ab823a7a-9f06-40b9-a620-1e6591c3ee87'}],
                'id': u'c79bacd3-2659-49d6-97fb-299cfa3dc7a3',
                'mac_address': u'fa:16:3e:32:f6:fa',
                'name': u'bozo_port',
@@ -667,7 +667,7 @@ floatingip.create.end::
     (Pdb) pprint.pprint(payload)
     {'floatingip': {
                 'fixed_ip_address': u'10.1.7.100',
-                'floating_ip_address': u'192.168.117.229',
+                'floating_ip_address': u'192.168.1.229',
                 'floating_network_id': u'1fb467ad-a996-4520-b941-27962e152a7e',
                 'id': 'd605daeb-4353-4250-8d72-76a702b6d75f',
                 'port_id': u'edd51762-9bd9-498a-a1ae-6ff7941622c9',
@@ -707,7 +707,7 @@ dhcp_agent.network.remove::
 
    # Json output via AMQP
    {
-    "device": "mp8.osi",
+    "device": "warehouse.osi",
     "data": {
         "traits": [
             {
@@ -728,7 +728,7 @@ dhcp_agent.network.remove::
             {
                 "dtype": 1,
                 "name": "service",
-                "value": "network.mp8.zenoss.loc"
+                "value": "network.warehouse.example.com"
             },
             {
                 "dtype": 1,
@@ -749,7 +749,7 @@ Reporting Events
 meter::
 
    {
-       "device": "mp8.osi",
+       "device": "warehouse.osi",
        "data": {
            "counter_name": "storage.objects",
            "user_id": null,
@@ -768,7 +768,7 @@ meter::
    }
 
    {
-      "device": "mp8.osi",
+      "device": "warehouse.osi",
       "data": {
          "counter_name": "image.size",
          "user_id": null,
@@ -987,7 +987,7 @@ compute.instance.update::
       {
          "dtype": 1,
          "name": "host_name",
-         "value": "mp8.zenoss.loc"
+         "value": "warehouse.example.com"
       },
       {
          "dtype": 1,
@@ -1004,7 +1004,7 @@ compute.instance.update::
 "event_type": "compute.instance.create.end"::
 
    {
-   "device": "mp8.osi",
+   "device": "warehouse.osi",
    "data": {
       "traits": [
          {
@@ -1096,7 +1096,7 @@ compute.instance.update::
          {
          "dtype": 1,
          "name": "host_name",
-         "value": "mp8.zenoss.loc"
+         "value": "warehouse.example.com"
          },
          {
          "dtype": 1,
