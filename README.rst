@@ -51,4 +51,10 @@ Add a section to the file to configure the zenoss dispatcher::
 For more details on configuring these properly, consult the documentation for
 the OpenstackInfrastructure ZenPack.
 
+Changes
+----------------
+
+* Version 1.0.0
+
+  -  Added Neutron event definitions
 
