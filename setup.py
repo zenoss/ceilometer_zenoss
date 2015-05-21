@@ -41,7 +41,7 @@ setup(
         'ceilometer.dispatcher': 'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher'
     },
 
-    version='0.9.4dev',
+    version='1.0.0dev',
     description="Ceilometer dispatcher plugin to ship data to Zenoss.",
     long_description=read('README.rst'),
 
