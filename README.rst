@@ -18,7 +18,7 @@ Installation
 
 To install the latest stable version
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
- * sudo cp /usr/lib/python2.6/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+ * sudo cp /usr/lib/*/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
 
 Configuration
@@ -51,4 +51,10 @@ Add a section to the file to configure the zenoss dispatcher::
 For more details on configuring these properly, consult the documentation for
 the OpenstackInfrastructure ZenPack.
 
+Changes
+----------------
+
+* Version 1.0.0
+
+  -  Added Neutron event definitions
 
