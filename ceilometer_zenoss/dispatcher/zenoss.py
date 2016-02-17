@@ -33,14 +33,14 @@ try:
     # should work up to Kilo
     from oslo.config import cfg
 except ImportError:
-    LOG.error("Failed to import cfg from oslo.config." +
-              " Try oslo_config...")
+    LOG.info("Could not import cfg from oslo.config." +
+              " Try import cfg from oslo_config...")
     try:
         # should work starting from Liberty
         from oslo_config import cfg
     except ImportError:
-        LOG.error("Failed to import cfg from oslo_config")
         # should not reach here
+        LOG.error("Failed to import cfg from oslo_config")
         pass
 
 from ceilometer import dispatcher
