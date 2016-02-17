@@ -16,10 +16,34 @@
 #
 ##############################################################################
 
-from oslo.config import cfg
+try:
+    # should work up to Kilo
+    from ceilometer.openstack.common import log
+except ImportError:
+    try:
+        # should work starting from Liberty
+        from oslo_log import log
+    except ImportError:
+        # should not reach here
+        pass
+
+LOG = log.getLogger(__name__)
+
+try:
+    # should work up to Kilo
+    from oslo.config import cfg
+except ImportError:
+    LOG.error("Failed to import cfg from oslo.config." +
+              " Try oslo_config...")
+    try:
+        # should work starting from Liberty
+        from oslo_config import cfg
+    except ImportError:
+        LOG.error("Failed to import cfg from oslo_config")
+        # should not reach here
+        pass
 
 from ceilometer import dispatcher
-from ceilometer.openstack.common import log
 
 from kombu import Connection
 from kombu.entity import Exchange
@@ -34,8 +58,6 @@ import os.path
 import socket
 import sys
 import time
-
-LOG = log.getLogger(__name__)
 
 zenoss_dispatcher_opts = [
     cfg.StrOpt('zenoss_device',
