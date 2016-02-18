@@ -24,24 +24,20 @@ except ImportError:
         # should work starting from Liberty
         from oslo_log import log
     except ImportError:
-        # should not reach here
-        pass
-
-LOG = log.getLogger(__name__)
+        import logging as log
 
 try:
     # should work up to Kilo
     from oslo.config import cfg
 except ImportError:
-    LOG.info("Could not import cfg from oslo.config." +
-              " Try import cfg from oslo_config...")
     try:
         # should work starting from Liberty
         from oslo_config import cfg
     except ImportError:
         # should not reach here
-        LOG.error("Failed to import cfg from oslo_config")
-        pass
+        raise ImportError('Could not import cfg from oslo.config, oslo_config.')
+
+LOG = log.getLogger(__name__)
 
 from ceilometer import dispatcher
 
