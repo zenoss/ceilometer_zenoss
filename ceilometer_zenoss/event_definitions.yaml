@@ -457,7 +457,18 @@
 # ------------------------------------------------------------------------------
 # Volume Events
 # ------------------------------------------------------------------------------
-- event_type: ['volume.exists', 'volume.create.*', 'volume.delete.*', 'volume.resize.*', 'volume.attach.*', 'volume.detach.*', 'volume.update.*', 'snapshot.exists', 'snapshot.create.*', 'snapshot.delete.*', 'snapshot.update.*']
+- event_type:
+    - volume.exists
+    - volume.create.*
+    - volume.delete.*
+    - volume.resize.*
+    - volume.attach.*
+    - volume.detach.*
+    - volume.update.*
+    - snapshot.exists
+    - snapshot.create.*
+    - snapshot.delete.*
+    - snapshot.update.*
   traits: &cinder_traits
     user_id:
       fields: payload.user_id
@@ -473,7 +484,14 @@
       fields: payload.status
     created_at:
       fields: payload.created_at
-- event_type: ['volume.exists', 'volume.create.*', 'volume.delete.*', 'volume.resize.*', 'volume.attach.*', 'volume.detach.*', 'volume.update.*']
+- event_type:
+    - volume.exists
+    - volume.create.*
+    - volume.delete.*
+    - volume.resize.*
+    - volume.attach.*
+    - volume.detach.*
+    - volume.update.*
   traits:
     <<: *cinder_traits
     volume_id:
@@ -488,7 +506,11 @@
       fields: payload.volume_type
     replication_status:
       fields: payload.replication_status
-- event_type: ['snapshot.exists', 'snapshot.create.*', 'snapshot.delete.*', 'snapshot.update.*']
+- event_type:
+    - snapshot.exists
+    - snapshot.create.*
+    - snapshot.delete.*
+    - snapshot.update.*
   traits:
     <<: *cinder_traits
     snapshot_id:
