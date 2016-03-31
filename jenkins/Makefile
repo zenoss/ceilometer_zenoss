@@ -2,8 +2,8 @@ default:
 	@echo "make centos6_rpm|centos7_rpm"
 
 images:
-	sudo docker build -f Dockerfile.centos6 --rm -t zenosslabs/rpm-builder-centos6 .
-	sudo docker build -f Dockerfile.centos7 --rm -t zenosslabs/rpm-builder-centos7 .
+	sudo docker build --rm -t zenosslabs/rpm-builder-centos6 centos6
+	sudo docker build --rm -t zenosslabs/rpm-builder-centos7 centos7
 
 rpms: el6_rpm el7_rpm
 	@echo done	
