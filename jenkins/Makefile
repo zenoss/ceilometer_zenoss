@@ -9,7 +9,7 @@ rpms: el6_rpm el7_rpm
 	@echo done	
 
 el6_rpm:
-	docker run --rm --privileged=true -v $(PWD):$(PWD) -w $(PWD) zenosslabs/rpm-builder-centos6 python setup.py bdist_rpm --release='1.el6'
+	docker run --rm --privileged=true -v $(CURDIR):$(CURDIR) -w $(CURDIR) zenosslabs/rpm-builder-centos6 python setup.py bdist_rpm --release='1.el6'
 
 el7_rpm:
-	docker run --rm --privileged=true -v $(PWD):$(PWD) -w $(PWD) zenosslabs/rpm-builder-centos7 python setup.py bdist_rpm --release='1.el7'
+	docker run --rm --privileged=true -v $(CURDIR):$(CURDIR) -w $(CURDIR) zenosslabs/rpm-builder-centos7 python setup.py bdist_rpm --release='1.el7'
