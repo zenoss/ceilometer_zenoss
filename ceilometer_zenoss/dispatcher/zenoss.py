@@ -165,7 +165,8 @@ class Heartbeat(object):
                 if self.connection.needs_reconnect:
                     self.connection.reconnect()
                     if self.connection.needs_reconnect:
-                        LOG.error("Unable to establish AMQP connection, unable to send heartbeats at this time.")
+                        LOG.error("Unable to establish AMQP connection, unable to send heartbeats at this time. ",
+                                  "Check AMQP connectivity and authentication credentials")
                         self.disable_for(conf.amqp_retry_interval_start)
                         return
                     self.reenable()
@@ -343,7 +344,8 @@ class ZenossDispatcher(dispatcher.Base):
             if amqp.needs_reconnect:
                 amqp.reconnect()
                 if amqp.needs_reconnect:
-                    LOG.error("Unable to establish AMQP connection, unable to record metering data at this time.")
+                    LOG.error("Unable to establish AMQP connection, unable to record metering data at this time. ",
+                              "Check AMQP connectivity and authentication credentials")
                     self.disable_for(conf.amqp_retry_interval_start)
                     return
 
@@ -380,7 +382,8 @@ class ZenossDispatcher(dispatcher.Base):
             if amqp.needs_reconnect:
                 amqp.reconnect()
                 if amqp.needs_reconnect:
-                    LOG.error("Unable to establish AMQP connection, unable to record event data at this time.")
+                    LOG.error("Unable to establish AMQP connection, unable to record event data at this time. "
+                              "Check AMQP connectivity and authentication credentials")
                     self.disable_for(conf.amqp_retry_interval_start)
                     return
 
