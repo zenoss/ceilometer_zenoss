@@ -393,7 +393,7 @@ class ZenossDispatcher(dispatcher.Base):
                     'openstack',
                     self.conf.dispatcher_zenoss.zenoss_device,
                     'event',
-                    event.event_type
+                    event['event_type']
                 ])
 
                 LOG.debug("Publishing message to %s" % (routing_key))
@@ -401,5 +401,5 @@ class ZenossDispatcher(dispatcher.Base):
                 self.publish(amqp, routing_key, {
                     'device': self.conf.dispatcher_zenoss.zenoss_device,
                     'type': 'event',
-                    'data': event.as_dict()
+                    'data': event
                 })
