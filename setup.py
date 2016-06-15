@@ -37,8 +37,14 @@ setup(
     package_data={
         '': ['*.yaml'],
     },
+
+    # see: Mitaka,
+    # /usr/lib/python2.7/site-packages/ceilometer/dispatcher/__init__.py
     entry_points={
-        'ceilometer.dispatcher': 'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher'
+        'ceilometer.dispatcher.event':
+            'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher',
+        'ceilometer.dispatcher.meter':
+            'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher',
     },
 
     version='1.0.3dev',

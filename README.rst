@@ -13,12 +13,41 @@ notification events.
 This dispatcher should be installed on all nodes running any ceilometer, but
 particularly those running ceilometer-collector or ceilometer-agent-notification.
 
+Compatibility
+-------------
+Version 1.0.1 for Kilo and prior; 1.0.2 for Liberty; 1.0.3 for Mitaka.
+
 Installation
 ------------
 
-To install the latest stable version
+To install the stable version of 1.0.1
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
  * sudo cp /usr/lib/*/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+
+To install the stable versions of 1.0.2 and 1.0.3, first git clone the ceilometer_zenoss repository from
+https://github.com/zenoss/ceilometer_zenoss to a Linux server, either Ubuntu 14.04+,
+or CentOS 6.5+. Install docker or docker-engine on the Linux server.
+Next navigate to the top directory of ceilometer_zenoss,
+<syntaxhighlight lang="bash">
+  $ make -C jenkins images
+  $ make -f jenkins/Makefile rpms
+</syntaxhighlight>
+
+This generates RPM files for RHEL6, RHEL7, CentOS 6 and CentOS 7.
+Before installing RPMs on OpenStack ceilometer hosts, make sure older versions of
+cepilometer_zenoss has been erased. One can check this using:
+<syntaxhighlight lang="bash">
+  $ pip list | grep ceilometer_zenoss
+</syntaxhighlight>
+or:
+<syntaxhighlight lang="bash">
+  $ rpm -qa | grep ceilometer_zenoss
+</syntaxhighlight>
+
+To install ceilometer_zenoss rpm on an OpenStack ceilometer host,
+<syntaxhighlight lang="bash">
+  $ rpm -Uvh <ceilometer_zenoss rpm>
+</syntaxhighlight>
 
 
 Configuration
@@ -26,15 +55,24 @@ Configuration
 
 Several changes are required in /etc/ceilometer/ceilometer.conf.
 
-In the [DEFAULT] section, add the line:::
+For Liberty and prior, in the [DEFAULT] section, add the line:::
 
     dispatcher=zenoss
 
-Place this after any other dispatchers you may already be using, such as "database",
+For Mitaka, in the [DEFAULT] section, add the lines:::
+
+    meter_dispatchers = zenoss
+    event_dispatchers = zenoss
+
+Place them after any other dispatchers you may already be using, such as "database",
 which stores data in the ceilometer database.   If you are only using ceilometer to
 feed zenoss, you do not need any other dispatchers enabled.
 
-Add a section to the file to configure the zenoss dispatcher::
+In the [notification] section, change the line:::
+    # Save event details.
+    store_events=True
+
+Add a section at the bottom to the file to configure the zenoss dispatcher::
     
     [dispatcher_zenoss]
   
@@ -55,6 +93,14 @@ Changes
 ----------------
 
 * Version 1.0.0
+  -  Initial release
 
-  -  Added Neutron event definitions
+* Version 1.0.1
+  -  Modified oslo packages import logic for Juno, Kilo and Liberty
+
+* Version 1.0.2
+  -  Modified event traits processing logic for Liberty
+
+* Version 1.0.3
+  -  Modified package entry points and ZenossDispatcher base classes for Mitaka
 

@@ -231,7 +231,8 @@ class Heartbeat(object):
         )
 
 
-class ZenossDispatcher(dispatcher.Base):
+class ZenossDispatcher(dispatcher.MeterDispatcherBase,
+                       dispatcher.EventDispatcherBase,):
     '''
 
     [dispatcher_zenoss]
