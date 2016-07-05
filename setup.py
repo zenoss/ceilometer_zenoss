@@ -41,7 +41,7 @@ setup(
         'ceilometer.dispatcher': 'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher'
     },
 
-    version='1.0.1',
+    version='1.0.2',
     description="Ceilometer dispatcher plugin to ship data to Zenoss.",
     long_description=read('README.rst'),
 
@@ -50,7 +50,7 @@ setup(
         'Environment :: OpenStack',
         'Intended Audience :: Information Technology',
         'Intended Audience :: System Administrators',
-        'License :: Other/Proprietary License',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2',
         'Topic :: System :: Monitoring',
@@ -61,7 +61,7 @@ setup(
     author='Zenoss, Inc.',
     author_email='support@zenoss.com',
     url='http://github.com/zenoss/ceilometer_zenoss',
-    license=read('LICENSE'),
+    license="Apache License, Version 2.0",
 
     requires=requires,
     install_requires=requires,
