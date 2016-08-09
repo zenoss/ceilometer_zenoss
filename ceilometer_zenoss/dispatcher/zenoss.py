@@ -231,8 +231,22 @@ class Heartbeat(object):
         )
 
 
-class ZenossDispatcher(dispatcher.MeterDispatcherBase,
-                       dispatcher.EventDispatcherBase,):
+try:
+    from ceilometer.dispatcher import MeterDispatcherBase, EventDispatcherBase
+    class ZenossDispatcherBase(MeterDispatcherBase, EventDispatcherBase):
+        '''
+            Inherit from both MeterDispatcherBase, EventDispatcherBase
+            for Mitaka and newer
+        '''
+except ImportError:
+    class ZenossDispatcherBase(dispatcher.Base):
+        '''
+            Inherit from dispatcher.Base
+            for Liberty and older
+        '''
+
+
+class ZenossDispatcher(ZenossDispatcherBase):
     '''
 
     [dispatcher_zenoss]

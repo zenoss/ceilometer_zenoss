@@ -15,27 +15,20 @@ particularly those running ceilometer-collector or ceilometer-agent-notification
 
 Compatibility
 -------------
-Version 1.0.1 for Kilo and prior; 1.0.2 for Liberty; 1.0.3 for Mitaka.
+Version 1.0.1 for Kilo and prior; 1.1.0 for Liberty and Mitaka.
 
 Installation
 ------------
 
 To install the stable version of 1.0.1
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
- * sudo cp /usr/lib/*/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+ * sudo cp /usr/lib//site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
-To install the stable versions of 1.0.2 and 1.0.3, first git clone the ceilometer_zenoss repository from
-https://github.com/zenoss/ceilometer_zenoss to a Linux server, either Ubuntu 14.04+,
-or CentOS 6.5+. Install docker or docker-engine on the Linux server.
-Next navigate to the top directory of ceilometer_zenoss,
-<syntaxhighlight lang="bash">
-  $ make -C jenkins images
-  $ make -f jenkins/Makefile rpms
-</syntaxhighlight>
-
-This generates RPM files for RHEL6, RHEL7, CentOS 6 and CentOS 7.
-Before installing RPMs on OpenStack ceilometer hosts, make sure older versions of
-cepilometer_zenoss has been erased. One can check this using:
+To install the stable versions of 1.1.0 and newer, from the latest successful build under:
+http://jenkins.zenosslabs.com/view/0%20-%20Master/job/master-ceilometer_zenoss
+download an appropriate rpm file to the OpenStack ceilometer host that fits the host's OS version.
+Before installing RPMs, make sure the older version of cepilometer_zenoss has been erased.
+One can check this using:
 <syntaxhighlight lang="bash">
   $ pip list | grep ceilometer_zenoss
 </syntaxhighlight>
@@ -44,7 +37,7 @@ or:
   $ rpm -qa | grep ceilometer_zenoss
 </syntaxhighlight>
 
-To install ceilometer_zenoss rpm on an OpenStack ceilometer host,
+Next:
 <syntaxhighlight lang="bash">
   $ rpm -Uvh <ceilometer_zenoss rpm>
 </syntaxhighlight>
@@ -96,11 +89,9 @@ Changes
   -  Initial release
 
 * Version 1.0.1
-  -  Modified oslo packages import logic for Juno, Kilo and Liberty
+  -  Modified oslo packages import logic for Juno and Kilo
 
-* Version 1.0.2
+* Version 1.1.0
   -  Modified event traits processing logic for Liberty
-
-* Version 1.0.3
   -  Modified package entry points and ZenossDispatcher base classes for Mitaka
 

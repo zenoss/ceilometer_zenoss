@@ -38,16 +38,19 @@ setup(
         '': ['*.yaml'],
     },
 
-    # see: Mitaka,
-    # /usr/lib/python2.7/site-packages/ceilometer/dispatcher/__init__.py
+    # ceilometer.dispatcher for Liberty and older
+    # ceilometer.dispatcher.event, ceilometer.dispatcher.meter for Mitaka
+    # and newer
     entry_points={
+        'ceilometer.dispatcher':
+            'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher',
         'ceilometer.dispatcher.event':
             'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher',
         'ceilometer.dispatcher.meter':
             'zenoss = ceilometer_zenoss.dispatcher.zenoss:ZenossDispatcher',
     },
 
-    version='1.0.3dev',
+    version='1.1.0dev',
     description="Ceilometer dispatcher plugin to ship data to Zenoss.",
     long_description=read('README.rst'),
 
