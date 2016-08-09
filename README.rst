@@ -24,8 +24,7 @@ To install the stable version of 1.0.1
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
  * sudo cp /usr/lib//site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
-To install the stable versions of 1.1.0 and newer, from the latest successful build under:
-http://jenkins.zenosslabs.com/view/0%20-%20Master/job/master-ceilometer_zenoss
+To install the stable versions of 1.1.0 and newer, from Zenoss RPM repository
 download an appropriate rpm file to the OpenStack ceilometer host that fits the host's OS version.
 Before installing RPMs, make sure the older version of cepilometer_zenoss has been erased.
 One can check this using:
