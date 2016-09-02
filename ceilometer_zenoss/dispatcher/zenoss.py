@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (C) Zenoss, Inc. 2014, all rights reserved.
+# Copyright (C) Zenoss, Inc. 2014-2016, all rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,16 +44,17 @@ from ceilometer import dispatcher
 from kombu import Connection
 from kombu.entity import Exchange
 from kombu.messaging import Producer
-import eventlet
-from eventlet import pools
-from eventlet import semaphore
 
+from contextlib import contextmanager
 import datetime
 import os
 import os.path
 import socket
 import sys
 import time
+import threading
+
+import pool
 
 zenoss_dispatcher_opts = [
     cfg.StrOpt('zenoss_device',
@@ -89,6 +90,9 @@ zenoss_dispatcher_opts = [
     cfg.IntOpt('zenoss_heartbeat_interval',
                default=30,
                help='Seconds to sleep between heartbeat messages sent to zenoss.'),
+    cfg.IntOpt('amqp_error_disable',
+               default=30,
+               help='Seconds to disable the dispatcher when AMQP connectivity errors occur.'),
 ]
 
 cfg.CONF.register_opts(zenoss_dispatcher_opts, group="dispatcher_zenoss")
@@ -132,7 +136,7 @@ class AMQPConnection(object):
             self.needs_reconnect = True
 
 
-class AMQPPool(pools.Pool):
+class AMQPPool(pool.Pool):
     def __init__(self, conf, *args, **kwargs):
         self.conf = conf
         super(AMQPPool, self).__init__(*args, **kwargs)
@@ -141,14 +145,25 @@ class AMQPPool(pools.Pool):
         exchange = Exchange('zenoss.openstack.ceilometer', type='topic')
         return AMQPConnection(self.conf, exchange)
 
-_pool_create_sem = semaphore.Semaphore()
+    @contextmanager
+    def item(self):
+        obj = self.get()
+        try:
+            yield obj
+        finally:
+            self.put(obj)
+
+_pool_create_sem = threading.Semaphore()
 
 
-class Heartbeat(object):
-
+class Heartbeat(threading.Thread):
+    name = "dispatcher_zenoss heartbeat"
+    daemon = True
     disable_until = None
 
     def __init__(self, conf):
+        super(Heartbeat, self).__init__()
+
         self.conf = conf
         exchange = Exchange('zenoss.openstack.heartbeats', type='topic')
         self.connection = AMQPConnection(self.conf, exchange)
@@ -157,25 +172,33 @@ class Heartbeat(object):
         self.processname = os.path.basename(sys.argv[0])
         self.processid = os.getpid()
 
+    def run(self):
         # Start sending heartbeats to zenoss
-        def heartbeat_loop():
-            conf = self.conf
+        conf = self.conf
 
-            while True:
+        while True:
+            if not self.enabled:
+                time.sleep(conf.zenoss_heartbeat_interval)
+                continue
+
+            try:
                 if self.connection.needs_reconnect:
                     self.connection.reconnect()
                     if self.connection.needs_reconnect:
-                        LOG.error("Unable to establish AMQP connection, unable to send heartbeats at this time. ",
+                        LOG.error("Unable to establish AMQP connection, unable to send heartbeats at this time. "
                                   "Check AMQP connectivity and authentication credentials")
-                        self.disable_for(conf.amqp_retry_interval_start)
-                        return
+                        self.disable_for(conf.amqp_error_disable)
+                        continue
                     self.reenable()
 
                 if self.enabled:
                     self.send_heartbeat()
-                eventlet.sleep(conf.zenoss_heartbeat_interval)
 
-        self._heartbeat = eventlet.spawn(heartbeat_loop)
+            except Exception, e:
+                LOG.error("Exception encountered during heartbeat processing: %s", e)
+                self.disable_for(conf.amqp_error_disable)
+
+            time.sleep(conf.zenoss_heartbeat_interval)
 
     @property
     def enabled(self):
@@ -188,9 +211,11 @@ class Heartbeat(object):
             return False
 
     def disable_for(self, seconds):
+        LOG.info("Disabling %s for %d seconds", self, seconds)
         self.disable_until = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
 
     def reenable(self):
+        LOG.info("Re-Enabling %s", self)
         self.disable_until = None
 
     def send_heartbeat(self):
@@ -233,6 +258,7 @@ class Heartbeat(object):
 
 try:
     from ceilometer.dispatcher import MeterDispatcherBase, EventDispatcherBase
+
     class ZenossDispatcherBase(MeterDispatcherBase, EventDispatcherBase):
         '''
             Inherit from both MeterDispatcherBase, EventDispatcherBase
@@ -276,6 +302,8 @@ class ZenossDispatcher(ZenossDispatcherBase):
     def __init__(self, conf):
         super(ZenossDispatcher, self).__init__(conf)
 
+        LOG.info("Starting new dispatcher (%s)" % self)
+
         missing_cfg = set()
         for required_cfg in ('zenoss_device', 'amqp_hostname', 'amqp_port',
                              'amqp_userid', 'amqp_password',
@@ -300,12 +328,15 @@ class ZenossDispatcher(ZenossDispatcherBase):
                 if not ZenossDispatcher.pool:
                     ZenossDispatcher.pool = AMQPPool(self.conf.dispatcher_zenoss)
 
-                # Create the heartbeat thread while we're at it too.
+                # Start heartbeat thread
                 if not ZenossDispatcher.heartbeat:
                     ZenossDispatcher.heartbeat = Heartbeat(self.conf.dispatcher_zenoss)
+                    ZenossDispatcher.heartbeat.start()
+
         except Exception, e:
             LOG.error("Exception during initialization: %s" % e)
             raise e
+
 
     @property
     def enabled(self):
@@ -318,12 +349,15 @@ class ZenossDispatcher(ZenossDispatcherBase):
             return False
 
     def disable_for(self, seconds):
+        LOG.info("Disabling %s for %d seconds", self, seconds)
         self.disable_until = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
 
     def disable_permanently(self):
+        LOG.info("Disabling %s", self)
         self.disable_until = datetime.datetime.max
 
     def reenable(self):
+        LOG.info("Reenabling %s", self)
         self.disable_until = None
 
     def publish(self, amqp, routing_key, data):
@@ -356,19 +390,22 @@ class ZenossDispatcher(ZenossDispatcherBase):
             data = [data]
 
         with self.pool.item() as amqp:
+            if not self.enabled:
+                return
+
             if amqp.needs_reconnect:
                 amqp.reconnect()
                 if amqp.needs_reconnect:
-                    LOG.error("Unable to establish AMQP connection, unable to record metering data at this time. ",
+                    LOG.error("Unable to establish AMQP connection, unable to record metering data at this time. "
                               "Check AMQP connectivity and authentication credentials")
-                    self.disable_for(conf.amqp_retry_interval_start)
+                    self.disable_for(conf.amqp_error_disable)
                     return
 
             for data_item in data:
                 routing_key = ".".join([
                     'zenoss',
                     'openstack',
-                    self.conf.dispatcher_zenoss.zenoss_device,
+                    conf.zenoss_device,
                     'meter',
                     data_item['counter_name'],
                     data_item['resource_id']
@@ -377,7 +414,7 @@ class ZenossDispatcher(ZenossDispatcherBase):
                 LOG.debug("Publishing message to %s" % (routing_key))
 
                 self.publish(amqp, routing_key, {
-                    'device': self.conf.dispatcher_zenoss.zenoss_device,
+                    'device': conf.zenoss_device,
                     'type': 'meter',
                     'data': data_item
                 })
@@ -385,28 +422,31 @@ class ZenossDispatcher(ZenossDispatcherBase):
     def record_events(self, events):
         conf = self.conf.dispatcher_zenoss
 
-        LOG.info("record_events called (events=%s)" % events)
-
         if not self.enabled:
             return
+
+        LOG.info("record_events called (events=%s)" % events)
 
         if not isinstance(events, list):
             events = [events]
 
         with self.pool.item() as amqp:
+            if not self.enabled:
+                return
+
             if amqp.needs_reconnect:
                 amqp.reconnect()
                 if amqp.needs_reconnect:
                     LOG.error("Unable to establish AMQP connection, unable to record event data at this time. "
                               "Check AMQP connectivity and authentication credentials")
-                    self.disable_for(conf.amqp_retry_interval_start)
+                    self.disable_for(conf.amqp_error_disable)
                     return
 
             for event in events:
                 routing_key = ".".join([
                     'zenoss',
                     'openstack',
-                    self.conf.dispatcher_zenoss.zenoss_device,
+                    conf.zenoss_device,
                     'event',
                     event['event_type']
                 ])
@@ -414,7 +454,7 @@ class ZenossDispatcher(ZenossDispatcherBase):
                 LOG.debug("Publishing message to %s" % (routing_key))
 
                 self.publish(amqp, routing_key, {
-                    'device': self.conf.dispatcher_zenoss.zenoss_device,
+                    'device': conf.zenoss_device,
                     'type': 'event',
                     'data': event
                 })
