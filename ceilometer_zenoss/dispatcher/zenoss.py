@@ -54,8 +54,6 @@ import sys
 import time
 import threading
 
-import pool
-
 zenoss_dispatcher_opts = [
     cfg.StrOpt('zenoss_device',
                default=None,
@@ -98,6 +96,37 @@ zenoss_dispatcher_opts = [
 cfg.CONF.register_opts(zenoss_dispatcher_opts, group="dispatcher_zenoss")
 
 
+try:
+    from ceilometer.dispatcher import MeterDispatcherBase, EventDispatcherBase
+
+    class ZenossDispatcherBase(MeterDispatcherBase, EventDispatcherBase):
+        '''
+            Inherit from both MeterDispatcherBase, EventDispatcherBase
+            for Mitaka and newer
+        '''
+
+    # In newer versions of ceilometer, the oslo notifications are processed by
+    # ceilometer-collector using the threading executor, so dispatcher methods
+    # are invoked within a thread pool.   Therefore, connection
+    # pooling should be managed appropriately, using python thread
+    # synchronization primitives.
+    from pool import Pool
+    from threading import Semaphore
+
+except ImportError:
+    # On versions prior to mitaka, the oslo notifications are processed by
+    # ceilometer-collector using the eventlet executor, so an eventlet-aware
+    # connection pooler is used.
+    from eventlet.pools import Pool
+    from eventlet.semaphore import Semaphore
+
+    class ZenossDispatcherBase(dispatcher.Base):
+        '''
+            Inherit from dispatcher.Base
+            for Liberty and older
+        '''
+
+
 # Basic connection pooling for our amqp producers and sessions, used for sending
 # AMQP messages to zenoss.
 
@@ -136,7 +165,7 @@ class AMQPConnection(object):
             self.needs_reconnect = True
 
 
-class AMQPPool(pool.Pool):
+class AMQPPool(Pool):
     def __init__(self, conf, *args, **kwargs):
         self.conf = conf
         super(AMQPPool, self).__init__(*args, **kwargs)
@@ -153,7 +182,7 @@ class AMQPPool(pool.Pool):
         finally:
             self.put(obj)
 
-_pool_create_sem = threading.Semaphore()
+_pool_create_sem = Semaphore()
 
 
 class Heartbeat(threading.Thread):
@@ -254,22 +283,6 @@ class Heartbeat(threading.Thread):
             routing_key=routing_key,
             headers={'x-message-ttl': 600000}  # 10 minutes
         )
-
-
-try:
-    from ceilometer.dispatcher import MeterDispatcherBase, EventDispatcherBase
-
-    class ZenossDispatcherBase(MeterDispatcherBase, EventDispatcherBase):
-        '''
-            Inherit from both MeterDispatcherBase, EventDispatcherBase
-            for Mitaka and newer
-        '''
-except ImportError:
-    class ZenossDispatcherBase(dispatcher.Base):
-        '''
-            Inherit from dispatcher.Base
-            for Liberty and older
-        '''
 
 
 class ZenossDispatcher(ZenossDispatcherBase):
