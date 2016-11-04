@@ -20,25 +20,11 @@ Version 1.0.1 for Kilo and prior; 1.1.0 for Liberty and Mitaka.
 Installation
 ------------
 
-To install the stable version of 1.0.1
+To install the most recent released version from source:
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
- * sudo cp /usr/lib//site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+ * sudo cp /usr/lib/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
-To install the stable versions of 1.1.0 and newer, from Zenoss RPM repository
-download an appropriate rpm file to the OpenStack ceilometer host that fits the host's OS version.
-Before installing RPMs, make sure the older version of cepilometer_zenoss has been erased.
-
-One can check this using::
-
-  $ pip list | grep ceilometer_zenoss
-
-or::
-
-  $ rpm -qa | grep ceilometer_zenoss
-
-Next::
-
-  $ rpm -Uvh <ceilometer_zenoss rpm>
+For versions 1.1.0 and newer, RPMs are available as well.
 
 Configuration
 -------------
