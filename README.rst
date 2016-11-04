@@ -27,31 +27,29 @@ To install the stable version of 1.0.1
 To install the stable versions of 1.1.0 and newer, from Zenoss RPM repository
 download an appropriate rpm file to the OpenStack ceilometer host that fits the host's OS version.
 Before installing RPMs, make sure the older version of cepilometer_zenoss has been erased.
-One can check this using:
-<syntaxhighlight lang="bash">
+
+One can check this using::
+
   $ pip list | grep ceilometer_zenoss
-</syntaxhighlight>
-or:
-<syntaxhighlight lang="bash">
+
+or::
+
   $ rpm -qa | grep ceilometer_zenoss
-</syntaxhighlight>
 
-Next:
-<syntaxhighlight lang="bash">
+Next::
+
   $ rpm -Uvh <ceilometer_zenoss rpm>
-</syntaxhighlight>
-
 
 Configuration
 -------------
 
 Several changes are required in /etc/ceilometer/ceilometer.conf.
 
-For Liberty and prior, in the [DEFAULT] section, add the line:::
+For Liberty and prior, in the [DEFAULT] section, add the line::
 
     dispatcher=zenoss
 
-For Mitaka, in the [DEFAULT] section, add the lines:::
+For Mitaka, in the [DEFAULT] section, add the lines::
 
     meter_dispatchers = zenoss
     event_dispatchers = zenoss
@@ -60,7 +58,8 @@ Place them after any other dispatchers you may already be using, such as "databa
 which stores data in the ceilometer database.   If you are only using ceilometer to
 feed zenoss, you do not need any other dispatchers enabled.
 
-In the [notification] section, change the line:::
+In the [notification] section, change the line::
+
     # Save event details.
     store_events=True
 
