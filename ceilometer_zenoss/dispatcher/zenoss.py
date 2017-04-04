@@ -140,10 +140,11 @@ class AMQPConnection(object):
     def __init__(self, conf, exchange):
         self.conf = conf
         self.exchange = exchange
-        self.needs_reconnect = False
         self.reconnect()
 
     def reconnect(self):
+        self.needs_reconnect = False
+
         LOG.info("Opening new AMQP connection to amqp://%s@%s:%s%s (%s)" % (
             self.conf.amqp_userid, self.conf.amqp_hostname, self.conf.amqp_port, self.conf.amqp_virtual_host, self.exchange.name))
 
