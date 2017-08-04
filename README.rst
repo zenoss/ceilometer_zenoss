@@ -31,11 +31,15 @@ Configuration
 
 Several changes are required in /etc/ceilometer/ceilometer.conf.
 
+For Newton and higher, in the [DEFAULT] section, add the line::
+
+    filter_project = services
+
 For Liberty and prior, in the [DEFAULT] section, add the line::
 
     dispatcher=zenoss
 
-For Mitaka, in the [DEFAULT] section, add the lines::
+For Mitaka and higher, in the [DEFAULT] section, add the lines::
 
     meter_dispatchers = zenoss
     event_dispatchers = zenoss
