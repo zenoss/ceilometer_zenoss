@@ -22,7 +22,7 @@ Installation
 
 To install the most recent released version from source:
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
- * sudo cp /usr/lib/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+ * sudo cp /usr/lib/python2.7/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
 For versions 1.1.0 and newer, RPMs are available as well.
 
@@ -31,9 +31,9 @@ Configuration
 
 Several changes are required in /etc/ceilometer/ceilometer.conf.
 
-For Newton and higher, in the [DEFAULT] section, add the line::
+For Newton and higher, in the [event] section, add the line::
 
-    filter_project = services
+    drop_unmatched_notifications = true
 
 For Liberty and prior, in the [DEFAULT] section, add the line::
 
