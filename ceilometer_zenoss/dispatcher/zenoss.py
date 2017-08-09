@@ -316,6 +316,9 @@ class ZenossDispatcher(ZenossDispatcherBase):
     def __init__(self, conf):
         super(ZenossDispatcher, self).__init__(conf)
 
+        if not hasattr(conf,"dispatcher_zenoss"):
+            conf.register_opts(zenoss_dispatcher_opts, group="dispatcher_zenoss")
+
         LOG.info("Starting new dispatcher (%s)" % self)
 
         missing_cfg = set()
