@@ -15,43 +15,31 @@ particularly those running ceilometer-collector or ceilometer-agent-notification
 
 Compatibility
 -------------
-Version 1.0.1 for Kilo and prior; 1.1.2 for Liberty and Mitaka.
+Version 1.0.1 for Kilo and prior; 1.2.0 for Liberty and newer.
 
 Installation
 ------------
 
-To install the stable version of 1.0.1
+To install the most recent released version from source:
  * sudo pip -q install --force-reinstall https://github.com/zenoss/ceilometer_zenoss/archive/master.zip
- * sudo cp /usr/lib//site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
+ * sudo cp /usr/lib/python2.7/site-packages/ceilometer_zenoss/event_definitions.yaml /etc/ceilometer/
 
-To install the stable versions of 1.1.0 and newer, from Zenoss RPM repository
-download an appropriate rpm file to the OpenStack ceilometer host that fits the host's OS version.
-Before installing RPMs, make sure the older version of cepilometer_zenoss has been erased.
-One can check this using:
-<syntaxhighlight lang="bash">
-  $ pip list | grep ceilometer_zenoss
-</syntaxhighlight>
-or:
-<syntaxhighlight lang="bash">
-  $ rpm -qa | grep ceilometer_zenoss
-</syntaxhighlight>
-
-Next:
-<syntaxhighlight lang="bash">
-  $ rpm -Uvh <ceilometer_zenoss rpm>
-</syntaxhighlight>
-
+For versions 1.1.0 and newer, RPMs are available as well.
 
 Configuration
 -------------
 
 Several changes are required in /etc/ceilometer/ceilometer.conf.
 
-For Liberty and prior, in the [DEFAULT] section, add the line:::
+For Newton and higher, in the [event] section, add the line::
+
+    drop_unmatched_notifications = true
+
+For Liberty and prior, in the [DEFAULT] section, add the line::
 
     dispatcher=zenoss
 
-For Mitaka, in the [DEFAULT] section, add the lines:::
+For Mitaka and higher, in the [DEFAULT] section, add the lines::
 
     meter_dispatchers = zenoss
     event_dispatchers = zenoss
@@ -60,7 +48,8 @@ Place them after any other dispatchers you may already be using, such as "databa
 which stores data in the ceilometer database.   If you are only using ceilometer to
 feed zenoss, you do not need any other dispatchers enabled.
 
-In the [notification] section, change the line:::
+In the [notification] section, change the line::
+
     # Save event details.
     store_events=True
 
@@ -96,3 +85,6 @@ Changes
 
 * Version 1.1.2
   - Fix bug that can cause failure to reconnect to amqp host after connection is interrupted. (ZPS-460)
+
+* Version 1.2.0
+  - Add dispatcher_zenoss config options during init to workarougnd changes in Ocata.
