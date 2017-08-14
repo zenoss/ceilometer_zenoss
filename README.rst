@@ -15,7 +15,7 @@ particularly those running ceilometer-collector or ceilometer-agent-notification
 
 Compatibility
 -------------
-Version 1.0.1 for Kilo and prior; 1.1.2 for Liberty and Mitaka.
+Version 1.0.1 for Kilo and prior; 1.2.0 for Liberty and newer.
 
 Installation
 ------------
@@ -85,3 +85,6 @@ Changes
 
 * Version 1.1.2
   - Fix bug that can cause failure to reconnect to amqp host after connection is interrupted. (ZPS-460)
+
+* Version 1.2.0
+  - Add dispatcher_zenoss config options during init to workarougnd changes in Ocata.
