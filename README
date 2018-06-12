@@ -1,0 +1,15 @@
+The purpose of the 'dist' branch is to hold a copy of the released binaries (RPMs).
+
+All RPMs should be posted here as well as under 'releases'.  The reason for this
+is that a regular release URL:
+
+https://github.com/zenoss/ceilometer_zenoss/releases/download/1.2.0/ceilometer_zenoss-1.2.0-1.el7.noarch.rpm
+
+could not be downloaded by an existing mechanism (DeployArtifactURLs in a heat
+template) that uses curl without the commandline option that causes it to follow
+redirects.  (in this case, github redirects to a s3 URL).
+
+By posting the binaries on this branch, they can be downloaded, without a redirect, as
+
+https://raw.githubusercontent.com/zenoss/ceilometer_zenoss/dist/ceilometer_zenoss-1.2.0-1.el7.noarch.rpm
+
