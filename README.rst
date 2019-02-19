@@ -62,7 +62,7 @@ Add a section at the bottom to the file to configure the zenoss dispatcher::
     
     # Zenoss AMQP Server
     amqp_hostname = <zenoss hostname>
-    amqp_port = 5672
+    amqp_port = 55672
     amqp_userid = <zenoss amqp userid>
     amqp_password = <zenoss amqp password>
     amqp_virtual_host = <zenoss amqp virtual host>
